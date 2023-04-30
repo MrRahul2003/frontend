@@ -6,6 +6,32 @@ import { backendURL } from "../private/Private";
 const url = backendURL;
 
 // adding a new product data in our database
+const genProduct = async (data) => {
+  try {
+    console.log("gen new product data sending", data);
+    const response = await axios.post(`${url}/productorder/genproductorder`, data);
+    console.log("gen new product response receiving", response);
+    return response;
+  } catch (error) {
+    console.log("Error while send product API", error.message);
+    return error;
+  }
+};
+
+// adding a new product data in our database
+const sendProduct = async (data) => {
+  try {
+    console.log("send new product data sending", data);
+    const response = await axios.post(`${url}/productorder/sendproductorder`, data);
+    console.log("send new product response receiving", response);
+    return response;
+  } catch (error) {
+    console.log("Error while send product API", error.message);
+    return error;
+  }
+};
+
+// adding a new product data in our database
 const addProduct = async (data) => {
   try {
     console.log("addProduct data sending", data);
@@ -70,4 +96,4 @@ const deleteProduct = async (data) => {
   }
 };
 
-export { addProduct, getProduct, getAllProduct, deleteProduct, editProduct };
+export { addProduct, getProduct, getAllProduct, deleteProduct, editProduct, genProduct, sendProduct };

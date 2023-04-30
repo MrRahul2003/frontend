@@ -71,7 +71,7 @@ const ProductOrderForm = ({ enquiryInfo }) => {
 
   return (
     <>
-      <AllItemList deleteItem={deleteItem} ItemList={ItemList} />
+      <AllItemList deleteItem={deleteItem} ItemList={ItemList} enquiryInfo={enquiryInfo} />
     </>
   );
 };

@@ -54,10 +54,16 @@ import EnquirySection from "./components/enquiry/EnquirySection";
 import Login from "./components/authentication/Login";
 import Signin from "./components/authentication/Signin";
 import Protected from "./components/private/Protected";
+
+// quotation
 import AddQuotation from "./components/enquiry/quotation/AddQuotation";
 import ShowQuotation from "./components/enquiry/quotation/ShowQuotation";
 import EditQuotation from "./components/enquiry/quotation/EditQuotation";
+
+// purchaseorder
 import PurchaseOrder from "./components/enquiry/purchaseorder/PurchaseOrder";
+
+// productorder
 import ProductOrder from "./components/enquiry/productorder/ProductOrder";
 
 function App() {
