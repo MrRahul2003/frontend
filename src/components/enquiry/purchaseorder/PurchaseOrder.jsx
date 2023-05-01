@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { useLocation } from "react-router-dom";
 
+// components
 import BreadCrumb from "../components/BreadCrumb";
 import PurchaseOrderForm from "./PurchaseOrderForm";
 
 const PurchaseOrder = () => { 
-  // ---------------------getting enquiry section info from navlink--------------------------------
+  // ---------------------getting quotation and enquiry section info from navlink--------------------------------
   let location = useLocation();
   console.log("Enquiry information is: ", location.state.quotationInfo);
   const quotationInfo = location.state.quotationInfo;

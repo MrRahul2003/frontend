@@ -2,36 +2,39 @@ import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 // components
-import FormHeading from "./FormHeading";
+import FormHeading from "../components/FormHeading";
 
 // Api
 import { addVendor } from "../../Api/Vendor";
 
-// Context Hooks
-import { LoginContext } from "../../context/LoginProvider";
+// sweet alert
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const AddVendorForm = () => {
-  // const { email, loginId } = useContext(LoginContext);
+
+  const MySwal = withReactContent(Swal);
+  
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
   const navigate = useNavigate();
 
-    // storing the vendor data
-    const [vendorDetails, setVendorDetails] = useState({
-        vendor_name: "",
-        vendor_email: "",
-        vendor_phone1: "",
-        vendor_phone2: "",
-        vendor_title: "",
-        vendor_company_name: "",
-        vendor_description: "",
-    
-        vendor_street: "",
-        vendor_city: "",
-        vendor_state: "",
-        vendor_country: "",
-        vendor_code: "",
-      });
+  // storing the vendor data
+  const [vendorDetails, setVendorDetails] = useState({
+    vendor_name: "",
+    vendor_email: "",
+    vendor_phone1: "",
+    vendor_phone2: "",
+    vendor_title: "",
+    vendor_company_name: "",
+    vendor_description: "",
+
+    vendor_street: "",
+    vendor_city: "",
+    vendor_state: "",
+    vendor_country: "",
+    vendor_code: "",
+  });
 
   // updating the add vendor data on changing the values
   const insertFields = (e) => {
@@ -53,7 +56,7 @@ const AddVendorForm = () => {
     const vendor_addingdate = new Date().toLocaleString();
 
     if (vendorDetails.vendor_name === "" || vendorDetails.vendor_email === "") {
-      alert("Enter the Details before procedding");
+      Swal.fire('Enter all Details before procedding...!')
     } else {
       const data = {
         employee_id: loginId,
@@ -79,11 +82,20 @@ const AddVendorForm = () => {
       console.log(response);
 
       if (response.status === 200) {
-        alert("New vendor added successfully");
+        Swal.fire(
+          'Good job!',
+          'New Vendor added successfully!',
+          'success'
+        )
+
         document.getElementById("addvendorform").reset();
         navigate("/vendors/showvendors");
       } else {
-        alert("invalid credentials");
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        })
       }
     }
   };

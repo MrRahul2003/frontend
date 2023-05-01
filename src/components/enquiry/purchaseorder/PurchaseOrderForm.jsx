@@ -1,26 +1,22 @@
-import React, { useContext, useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+
 // components
+import AllItemList from "./AllItemList";
+import ItemTable from "./ItemTable";
 
 // Api
-import { LoginContext } from "../../context/LoginProvider";
-
-// context hooks
-import FormHeading from "../components/FormHeading";
-import AllItemList from "./AllItemList";
-import {
-  addQuotation,
-  editQuotation,
-  genPurchaseOrder,
-  sendPurchaseOrder,
-} from "../../Api/Quotation";
-import ItemTable from "./ItemTable";
+import { genPurchaseOrder, sendPurchaseOrder } from "../../Api/Quotation";
 import { getVendor } from "../../Api/Vendor";
 
+// sweet alert
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
 const PurchaseOrderForm = ({ quotationInfo, enquiryInfo }) => {
-  // const { email, loginId } = useContext(LoginContext);
-  const { updateStatus, setUpdateStatus } = useContext(LoginContext);
+
+  const MySwal = withReactContent(Swal);
+
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
   const navigate = useNavigate();
@@ -28,6 +24,7 @@ const PurchaseOrderForm = ({ quotationInfo, enquiryInfo }) => {
   // ---------------------------storing items in enquiry data when user add it on form----------------------------------
   const [ItemList, setItemList] = useState([]); // storing all items here
   const [vendorData, setVendorData] = useState({});
+
   //  ---------------------fetching all vendors from database related to login user-------------------------
   const getVendorData = async () => {
     const data = {
@@ -63,18 +60,37 @@ const PurchaseOrderForm = ({ quotationInfo, enquiryInfo }) => {
     console.log(response);
 
     if (response.status === 200) {
-      alert("purchase order generated successfully");
+      Swal.fire({
+        title: "Purchase Order has been generated?",
+        text: "Do you wish to send it on Mail to vendors!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Send it!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const res = await sendPurchaseOrder(data);
+          console.log(res.data);
 
-      const res = await sendPurchaseOrder(data);
-      console.log(res);
-      if (response.status === 200) {
-        alert("mail send successfully");
-        navigate("/enquirysales/showenquiry");
-      } else {
-        alert("invalid credentials");
-      }
+          if (res.status === 200) {
+            Swal.fire("Sent!", "Your Purchase Order has been sent.", "success");
+            navigate("/enquirysales/showenquiry");
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Something went wrong!",
+            });
+          }
+        }
+      });
     } else {
-      alert("invalid credentials");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+      });
     }
   };
 

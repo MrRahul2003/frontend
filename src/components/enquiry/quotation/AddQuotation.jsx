@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { useLocation } from "react-router-dom";
 
 // components
 import BreadCrumb from "../components/BreadCrumb";
@@ -17,7 +16,7 @@ const AddQuotation = () => {
     <>
       <div className="page-wrapper">
         <div className="content container-fluid">
-          <BreadCrumb title="Add Quotaion" />
+          <BreadCrumb title="Add New Quotaion" />
           <div className="row">
             <div className="col-sm-12">
               <div className="card comman-shadow">

@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { CSVLink } from "react-csv";
-import { LoginContext } from "../context/LoginProvider";
-import { getPipelineEnquiry } from "../Api/Enquiry";
+import React, { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
+
+// components
 import BreadCrumb from "./components/BreadCrumb";
-import FormHeading from "./components/FormHeading";
 import Filter from "./components/Filter";
 
+// api
+import { getPipelineEnquiry } from "../Api/Enquiry";
+
 const ShowEnquirySales = () => {
-  // const { email, loginId } = useContext(LoginContext);
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
   const [AllEnquiry, setAllEnquiry] = useState([]);
@@ -46,20 +46,10 @@ const ShowEnquirySales = () => {
                         <div className="row align-items-center">
                           <div className="col">
                             <h3 className="page-title">
-                              {/* Enquiry {i + 1} -- {item._id} */}
-                              Enquiry {i + 1}
+                              Contact Id -- {item.enquiry_contact_id}
                             </h3>
                           </div>
-                          <div className="col-auto text-end float-end ms-auto download-grp">
-                            {/* <CSVLink
-                              data={csv_file}
-                              filename={"enquiries.csv"}
-                              className="btn btn-outline-primary me-2"
-                              target="_blank"
-                            >
-                              <i className="fas fa-download" /> Download
-                            </CSVLink> */}
-                          </div>
+                          <span>Enquiry Id -- {item._id}</span>
                         </div>
                       </div>
                       <div className="table-responsive">
@@ -71,7 +61,7 @@ const ShowEnquirySales = () => {
                               <th>Stage</th>
                               <th>Contact Name</th>
                               <th>Closing Date</th>
-                              <th>Adding Date</th> 
+                              <th>Adding Date</th>
                               <th>Action</th>
                               <th>Quotation</th>
                               <th>Order</th>
@@ -118,7 +108,7 @@ const ShowEnquirySales = () => {
                                       className="btn btn-sm bg-success-light me-2"
                                       state={{ enquiryInfo: item }}
                                     >
-                                      <i className="feather-share" />
+                                      <i className="feather-share-2" />
                                     </NavLink>
                                   </td>
 
@@ -127,7 +117,7 @@ const ShowEnquirySales = () => {
                                       to="/enquirysales/addquotation"
                                       className="btn btn-sm bg-success-light me-2"
                                       state={{ enquiryInfo: item }}
-                                    > 
+                                    >
                                       <i className="feather-plus" />
                                     </NavLink>
                                     <NavLink
@@ -144,12 +134,10 @@ const ShowEnquirySales = () => {
                                       to="/enquirysales/productorder"
                                       className="btn btn-sm bg-success-light me-2"
                                       state={{ enquiryInfo: item }}
-                                    > 
+                                    >
                                       <i className="feather-share" />
                                     </NavLink>
-
                                   </td>
-
                                 </tr>
                               );
                             })}

@@ -11,7 +11,7 @@ const SideNav = () => {
           <div style={{ display: "flex", height: "100%" }}>
             <Sidebar>
               <li className="menu-title mt-3">
-                <span>Pre Sales</span>
+                <span>Main Menu</span>
               </li>
               <Menu>
                 {/* ----------------------------- Pipeline---------------------------------- */}
@@ -24,10 +24,13 @@ const SideNav = () => {
                   </MenuItem>
                 </NavLink>
                 {/* ----------------------------------------------------------------------- */}
+                <li className="menu-title mt-3">
+                  <span>Pre Sales</span>
+                </li>
                 {/* ----------------------------- Contacts ---------------------------------- */}
                 <SubMenu
                   label="Contacts"
-                  icon={<i className="fas fa-address-book"></i>}
+                  icon={<i className="fas fa-users"></i>}
                 >
                   <NavLink
                     to="/contacts/showcontacts"
@@ -52,7 +55,7 @@ const SideNav = () => {
                 {/* ----------------------------- Company---------------------------------- */}
                 <SubMenu
                   label="Company"
-                  icon={<i className="fas fa-suitcase"></i>}
+                  icon={<i className="fas fa-building"></i>}
                 >
                   <NavLink
                     to="/company/showcompanies"
@@ -80,7 +83,7 @@ const SideNav = () => {
                 {/* ----------------------------- Authentication ---------------------------------- */}
                 <SubMenu
                   label="Authentication"
-                  icon={<i className="fas fa-envelope"></i>}
+                  icon={<i className="fas fa-unlock-alt"></i>}
                 >
                   <NavLink
                     to="/authentication/signin"
@@ -120,7 +123,7 @@ const SideNav = () => {
                 {/* ----------------------------- Vendors ---------------------------------- */}
                 <SubMenu
                   label="Vendors"
-                  icon={<i className="fas fa-users"></i>}
+                  icon={<i className="fa fa-archive"></i>}
                 >
                   <NavLink
                     to="/vendors/showvendors"

@@ -1,11 +1,5 @@
 import React, { useContext } from "react";
-import {
-  Sidebar,
-  Menu,
-  MenuItem,
-  useProSidebar,
-  SubMenu,
-} from "react-pro-sidebar";
+import { useProSidebar } from "react-pro-sidebar";
 
 // Context Hooks
 import { LoginContext } from "../components/context/LoginProvider";
@@ -33,11 +27,10 @@ const Header = () => {
         <div className="header-left">
           <a href="index.html" className="logo">
             <img src="/logo.jpeg" alt="Logo" />
-            {/* <h2>AEGIS</h2> */}
           </a>
           <a href="index.html" className="logo logo-small">
             <img
-              src="/assets/img/logo-small.png"
+              src="/logo.jpeg"
               alt="Logo"
               width={30}
               height={30}
@@ -60,7 +53,7 @@ const Header = () => {
               <span className="user-img">
                 <img
                   className="rounded-circle"
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtp36BtdqybuCc5plSuHOfDv_t5xRIUAHheEbviGy_uRD3sCZDa-eCAPHTICCphaFyMME&usqp=CAU"
+                  src="/logo.jpeg"
                   width={31}
                 />
                 <div className="user-text">
@@ -72,7 +65,7 @@ const Header = () => {
               <div className="user-header">
                 <div className="avatar avatar-sm">
                   <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtp36BtdqybuCc5plSuHOfDv_t5xRIUAHheEbviGy_uRD3sCZDa-eCAPHTICCphaFyMME&usqp=CAU"
+                    src="/logo.jpeg"
                     alt="User Image"
                     className="avatar-img rounded-circle"
                   />
@@ -82,12 +75,6 @@ const Header = () => {
                   <p className="text-muted mb-0">{email}</p>
                 </div>
               </div>
-              <a className="dropdown-item" href="profile.html">
-                My Profile
-              </a>
-              <a className="dropdown-item" href="inbox.html">
-                Inbox
-              </a>
               <a className="dropdown-item" href="login.html" onClick={logout}>
                 Logout
               </a>

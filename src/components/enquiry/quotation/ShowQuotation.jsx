@@ -1,22 +1,26 @@
 import React, { useContext, useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { CSVLink } from "react-csv";
-import { LoginContext } from "../../context/LoginProvider";
-import { getQuotation } from "../../Api/Quotation";
+
+// api
+import { getQuotation, deleteQuotation } from "../../Api/Quotation";
+
+// components
 import BreadCrumb from "../components/BreadCrumb";
-import { deleteQuotation } from "../../Api/Quotation";
-import { useNavigate } from "react-router-dom";
+
+// sweet alert
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const ShowQuotation = () => {
+  const MySwal = withReactContent(Swal);
+
   // ---------------------getting enquiry section info from navlink--------------------------------
   let location = useLocation();
   console.log("Enquiry information is: ", location.state.enquiryInfo);
   const enquiryInfo = location.state.enquiryInfo;
   // ---------------------------------------------------------------------------------------
 
-  // const { email, loginId } = useContext(LoginContext);
   const [AllQuotation, setAllQuotation] = useState([]);
-  const { updateStatus, setUpdateStatus } = useContext(LoginContext);
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
 
@@ -45,14 +49,31 @@ const ShowQuotation = () => {
       quotation_id: quotationInfo._id,
     };
 
-    const response = await deleteQuotation(data);
-    console.log(response.data);
-    if (response.status === 200) {
-      alert("contact deleted successfully");
-      setdeleteStatus(!deleteStatus);
-    } else {
-      alert("invalid credentials");
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const response = await deleteQuotation(data);
+        console.log(response.data);
+
+        if (response.status === 200) {
+          Swal.fire("Deleted!", "Your Company has been deleted.", "success");
+          setdeleteStatus(!deleteStatus);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong!",
+          });
+        }
+      }
+    });
   };
 
   // -----------------------------------------------------------------------------------------------------------
@@ -64,26 +85,10 @@ const ShowQuotation = () => {
       <div className="page-wrapper">
         <div className="content container-fluid">
           <BreadCrumb title="Show Quotations" />
-          {/* <Filter /> */}
           <div className="row">
             <div className="col-sm-12">
               <div className="card card-table">
                 <div className="card-body">
-                  <div className="page-header">
-                    <div className="row align-items-center">
-                      <div className="col-auto text-end float-end ms-auto download-grp">
-                        {/* <CSVLink
-                          data={csv_file}
-                          filename={"enquiries.csv"}
-                          className="btn btn-outline-primary me-2"
-                          target="_blank"
-                        >
-                          <i className="fas fa-download" /> Download
-                        </CSVLink> */}
-                      </div>
-                    </div>
-                  </div>
-
                   {AllQuotation &&
                     AllQuotation.map((item, i) => {
                       return (
@@ -100,7 +105,8 @@ const ShowQuotation = () => {
                                     enquiryInfo: enquiryInfo,
                                   }}
                                 >
-                                  <i className="feather-share" />
+                                  Send
+                                  <i className="feather-share-2 mx-2" />
                                 </NavLink>
 
                                 <NavLink
@@ -113,6 +119,7 @@ const ShowQuotation = () => {
                                 >
                                   <i className="feather-edit" />
                                 </NavLink>
+
                                 <a
                                   className="btn btn-sm bg-danger-light"
                                   onClick={async (e) => {

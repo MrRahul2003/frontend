@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
+// components
 import AllItemList from "./AllItemList";
 import FormHeading from "../components/FormHeading";
 import BreadCrumb from "../components/BreadCrumb";
@@ -9,24 +9,26 @@ import BreadCrumb from "../components/BreadCrumb";
 // Api
 import { editEnquiry } from "../../Api/Enquiry";
 
-// context hooks
-import { LoginContext } from "../../context/LoginProvider";
+// sweet alert
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const EditEnquiry = () => {
-    // ---------------------getting enquiry section info from navlink--------------------------------
-    let location = useLocation();
-    console.log("Contact information is: ", location.state.contactInfo);
-    const contactInfo = location.state.contactInfo;
-    console.log("Enquiry information is: ", location.state.enquiryInfo);
-    const EnquiryInfo = location.state.enquiryInfo;
-    // ---------------------------------------------------------------------------------------
 
-  const { editenquiryInfo, display, setDisplay } =
-    useContext(LoginContext);
-    const loginId = localStorage.getItem("loginId");
-    const email = localStorage.getItem("email");
-    const navigate = useNavigate();
-    
+  const MySwal = withReactContent(Swal);
+
+  // ---------------------getting contact and enquiry info from navlink--------------------------------
+  let location = useLocation();
+  console.log("Contact information is: ", location.state.contactInfo);
+  const contactInfo = location.state.contactInfo;
+  console.log("Enquiry information is: ", location.state.enquiryInfo);
+  const EnquiryInfo = location.state.enquiryInfo;
+  // ---------------------------------------------------------------------------------------
+
+  const loginId = localStorage.getItem("loginId");
+  const email = localStorage.getItem("email");
+  const navigate = useNavigate();
+
   // ---------------When the page loads enquiryInfo and ItemList is updated---------------------------------------------
 
   const [enquiryInfo, setenquiryInfo] = useState({});
@@ -102,15 +104,15 @@ const EditEnquiry = () => {
       itemInfo.item_modalNo !== "" ||
       itemInfo.item_partNo !== ""
     ) {
-      alert("Enter the Details or add item to list");
+      Swal.fire('Enter all Details or add item to list before procedding!')
     } else {
       const data = {
         employee_id: loginId,
         employee_email: email,
         enquiry_contact_id: contactInfo._id,
         enquiry_contact_name: contactInfo.contact_name,
-        
-        enquiry_id : EnquiryInfo._id,
+
+        enquiry_id: EnquiryInfo._id,
         enquiry_name: enquiryInfo.enquiry_name,
         enquiry_stage: enquiryInfo.enquiry_stage,
         enquiry_closingDate: enquiryInfo.enquiry_closingDate,
@@ -123,12 +125,15 @@ const EditEnquiry = () => {
       console.log(response);
 
       if (response.status === 200) {
-        alert("enquiry edited successfully");
+        Swal.fire("Good job!", "Changes made successfully!", "success");
         document.getElementById("editenquiryform").reset();
         navigate("/contacts/showcontacts");
-
       } else {
-        alert("invalid credentials");
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        })
       }
     }
   };

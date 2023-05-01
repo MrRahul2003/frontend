@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 // components
@@ -8,11 +8,14 @@ import BreadCrumb from "./components/BreadCrumb";
 import { getAllProduct } from "../Api/Product";
 import { addSubProduct } from "../Api/SubProduct";
 
-// context hooks
-import { LoginContext } from "../context/LoginProvider";
+// sweet alert
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const AddSubProducts = () => {
-  // const { email, loginId } = useContext(LoginContext);
+
+  const MySwal = withReactContent(Swal);
+
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
   const navigate = useNavigate();
@@ -99,7 +102,7 @@ const AddSubProducts = () => {
       subproductDetails.subproduct_price === "" ||
       subproductDetails.product_id === ""
     ) {
-      alert("enter all fields");
+      Swal.fire('Enter all Details before procedding...!')
     } else {
       const data = {
         employee_id: loginId,
@@ -121,11 +124,19 @@ const AddSubProducts = () => {
       console.log(response);
 
       if (response.status === 200) {
-        alert("company subproduct added successfully");
+        Swal.fire(
+          'Good job!',
+          'New SubProduct added successfully!',
+          'success'
+        )
         document.getElementById("addSubProductForm").reset();
         navigate("/products/showproducts");
       } else {
-        alert("invalid credentials");
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        })
       }
     }
   };
@@ -133,7 +144,7 @@ const AddSubProducts = () => {
     <>
       <div className="page-wrapper">
         <div className="content container-fluid">
-          <BreadCrumb title="Add SubProduct" />
+          <BreadCrumb title="Add New SubProduct" />
           <div className="row">
             <div className="col-sm-12">
               <div className="card comman-shadow">

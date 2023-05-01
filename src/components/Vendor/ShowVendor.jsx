@@ -4,15 +4,17 @@ import { CSVLink } from "react-csv";
 
 // components
 import BreadCrumb from "./components/BreadCrumb";
-import Filter from "./showvendors/Filter";
+import Filter from "./components/Filter";
 
 // Api
 import { getAllVendor, deleteVendor } from "../Api/Vendor";
 
-// Context Hooks
-import { LoginContext } from "../context/LoginProvider";
+// sweet alert
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const ShowVendor = () => {
+  const MySwal = withReactContent(Swal);
   const [allVendor, setAllVendor] = useState([]);
 
   // const { email, loginId } = useContext(LoginContext);
@@ -37,6 +39,8 @@ const ShowVendor = () => {
   // -----------------------------------------------------------------------------------------------------------
 
   // -----------------------Deleting a vendor------------------------------------------------------------------
+  const [deleteStatus, setdeleteStatus] = useState(false);
+  
   const deleteVendorDetails = async (vendorId) => {
     const data = {
       employee_id: loginId,
@@ -44,15 +48,37 @@ const ShowVendor = () => {
       vendor_id: vendorId,
     };
 
-    const response = await deleteVendor(data);
-    console.log(response.data);
-    if (response.status === 200) {
-      alert("vendor deleted successfully");
-      // navigate("/studentfees/showfees");
-    } else {
-      alert("invalid credentials");
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const response = await deleteVendor(data);
+        console.log(response.data);
+
+        if (response.status === 200) {
+          Swal.fire("Deleted!", "Your Company has been deleted.", "success");
+          setdeleteStatus(!deleteStatus);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong!",
+          });
+        }
+      }
+    });
+
   };
+
+  useEffect(() => {
+    getAllVendorData();
+  }, [deleteStatus]);
   // -----------------------------------------------------------------------------------------------------------
   // ------------------------csv data--------------------------------------------------------------
   const csv_file = [];

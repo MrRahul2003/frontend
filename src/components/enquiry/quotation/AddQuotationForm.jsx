@@ -1,20 +1,25 @@
 import React, { useContext, useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+
 // components
+import AllItemList from "./AllItemList";
 
 // Api
-// import { addEnquiry } from "../../../Api/Enquiry";
-import { LoginContext } from "../../context/LoginProvider";
-
-// context hooks
-import FormHeading from "../components/FormHeading";
-import AllItemList from "./AllItemList";
 import { addQuotation } from "../../Api/Quotation";
 import { getAllVendor } from "../../Api/Vendor";
 
+// context hooks
+import { LoginContext } from "../../context/LoginProvider";
+
+// sweet alert
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
 const AddQuotationForm = ({ enquiryInfo }) => {
-  // const { email, loginId } = useContext(LoginContext);
+
+  const MySwal = withReactContent(Swal);
+
   const { updateStatus, setUpdateStatus } = useContext(LoginContext);
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
@@ -38,7 +43,7 @@ const AddQuotationForm = ({ enquiryInfo }) => {
   }, []);
   // -----------------------------------------------------------------------------------------------------------
 
-  // ---------------------------storing items in enquiry data when user add it on form----------------------------------
+  // ---------------------------storing items in quotation data when user add it on form----------------------------------
   const [ItemList, setItemList] = useState([]); // storing all items here
   const [vendorInfo, setVendorInfo] = useState("");
 
@@ -53,7 +58,7 @@ const AddQuotationForm = ({ enquiryInfo }) => {
     item_total_price: "",
   });
 
-  // updating the add enquiry item data on changing the values
+  // updating the add quotation item data on changing the values
   const insertItems = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -97,7 +102,7 @@ const AddQuotationForm = ({ enquiryInfo }) => {
       itemInfo.item_quantity !== "" ||
       itemInfo.item_total_price !== ""
     ) {
-      alert("Enter the Details or add item to list");
+      Swal.fire('Enter all Details before procedding...!')
     } else {
       const data = {
         employee_id: loginId,
@@ -115,13 +120,22 @@ const AddQuotationForm = ({ enquiryInfo }) => {
       console.log(response);
 
       if (response.status === 200) {
-        alert("quotation added successfully");
+        Swal.fire(
+          'Good job!',
+          'New Quotation added successfully!',
+          'success'
+        )
+
         document.getElementById("addquotaionform").reset();
         setUpdateStatus(!updateStatus);
         setItemList([]);
         navigate("/enquirysales/showenquiry");
       } else {
-        alert("invalid credentials");
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        })
       }
     }
   };

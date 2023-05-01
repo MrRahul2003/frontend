@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { CSVLink } from "react-csv";
 
@@ -9,13 +9,15 @@ import Filter from "./showcontacts/Filter";
 // Api
 import { deleteContact, getAllContacts } from "../Api/Contact";
 
-// Context Hooks
-import { LoginContext } from "../context/LoginProvider";
+// sweet alert
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const ShowContacts = () => {
+  const MySwal = withReactContent(Swal);
+
   const [allContact, setAllContact] = useState([]);
 
-  // const { email, loginId } = useContext(LoginContext);
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
 
@@ -46,14 +48,31 @@ const ShowContacts = () => {
       contact_id: contactId,
     };
 
-    const response = await deleteContact(data);
-    console.log(response.data);
-    if (response.status === 200) {
-      alert("contact deleted successfully");
-      setdeleteStatus(!deleteStatus);
-    } else {
-      alert("invalid credentials");
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const response = await deleteContact(data);
+        console.log(response.data);
+
+        if (response.status === 200) {
+          Swal.fire("Deleted!", "Your Contact has been deleted.", "success");
+          setdeleteStatus(!deleteStatus);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong!",
+          });
+        }
+      }
+    });
   };
 
   useEffect(() => {
@@ -191,7 +210,7 @@ const ShowContacts = () => {
                                     deleteContactDetails(item._id);
                                   }}
                                 >
-                                  <i className="feather-delete" />
+                                  <i className="fa fa-trash" />
                                 </a>
                                 {/* ------------------------------------------------------------------------------------------------------- */}
                               </td>

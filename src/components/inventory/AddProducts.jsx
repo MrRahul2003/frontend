@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // components
@@ -7,11 +7,13 @@ import BreadCrumb from "./components/BreadCrumb";
 // Api
 import { addProduct } from "../Api/Product";
 
-// context hooks
-import { LoginContext } from "../context/LoginProvider";
+// sweet alert
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const AddProducts = () => {
-  // const { email, loginId } = useContext(LoginContext);
+  const MySwal = withReactContent(Swal);
+
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
   const navigate = useNavigate();
@@ -20,7 +22,7 @@ const AddProducts = () => {
   const [productDetails, setproductDetails] = useState({
     product_name: "",
     product_desc: "",
-    product_category: ""
+    product_category: "",
   });
 
   // updating the product data as the value gets change
@@ -42,8 +44,11 @@ const AddProducts = () => {
 
     const product_addingdate = new Date().toLocaleString();
 
-    if (productDetails.product_name === "" || productDetails.product_category === "") {
-      alert("enter all fields");
+    if (
+      productDetails.product_name === "" ||
+      productDetails.product_category === ""
+    ) {
+      Swal.fire("Enter all Details before procedding...!");
     } else {
       const data = {
         employee_id: loginId,
@@ -60,11 +65,15 @@ const AddProducts = () => {
       console.log(response);
 
       if (response.status === 200) {
-        alert("company product added successfully");
+        Swal.fire("Good job!", "New Product added successfully!", "success");
         document.getElementById("addProductForm").reset();
         navigate("/products/showproducts");
       } else {
-        alert("invalid credentials");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
       }
     }
   };
@@ -72,7 +81,7 @@ const AddProducts = () => {
     <>
       <div className="page-wrapper">
         <div className="content container-fluid">
-          <BreadCrumb title="Add Product" />
+          <BreadCrumb title="Add New Product" />
           <div className="row">
             <div className="col-sm-12">
               <div className="card comman-shadow">
@@ -84,7 +93,7 @@ const AddProducts = () => {
                           Product Information
                         </h5>
                       </div>
-                      
+
                       <div className="col-12 col-sm-6">
                         <div className="form-group local-forms">
                           <label>Product name</label>
@@ -101,17 +110,19 @@ const AddProducts = () => {
                       <div className="col-12 col-sm-6">
                         <div className="form-group local-forms">
                           <label>
-                            Products Category <span className="login-danger">*</span>
+                            Products Category{" "}
+                            <span className="login-danger">*</span>
                           </label>
                           <select
                             className="form-control select"
                             onChange={insertFields}
                             name="product_category"
                           >
-                            <option className="active" value="">Select Product Category</option>
+                            <option className="active" value="">
+                              Select Product Category
+                            </option>
                             <option value="projects">Projects</option>
                             <option value="spareparts">SpareParts</option>
-
                           </select>
                         </div>
                       </div>
@@ -140,7 +151,6 @@ const AddProducts = () => {
                           </button>
                         </div>
                       </div>
-
                     </div>
                   </form>
                 </div>

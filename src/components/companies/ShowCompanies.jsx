@@ -1,21 +1,25 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { CSVLink } from "react-csv";
- 
+
 // components
-import BreadCrumb from "./components/BreadCrumb";
-import Filter from "./showcompany/Filter";
+import BreadCrumb from "./components/BreadCrumb"; 
+import Filter from "./components/Filter";
 
 // Api
 import { deleteCompany, getAllCompanys } from "../Api/Company";
 
-// Context Hooks
-import { LoginContext } from "../context/LoginProvider";
+// sweet alert
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const ShowCompanies = () => {
+  const MySwal = withReactContent(Swal);
+
   const [allCompanies, setAllCompanies] = useState([]);
 
-  const { email, loginId } = useContext(LoginContext);
+  const loginId = localStorage.getItem("loginId");
+  const email = localStorage.getItem("email");
 
   //  ---------------------fetching all companies from database related to login user-------------------------
   const getAllCompaniesData = async () => {
@@ -37,21 +41,39 @@ const ShowCompanies = () => {
   // -----------------------Deleting a company------------------------------------------------------------------
   const [deleteStatus, setdeleteStatus] = useState(false);
 
-  const deleteCompanyDetails = async (companyId) => {
+  const deleteCompanyDetails = (companyId) => {
     const data = {
       employee_id: loginId,
       employee_email: email,
       company_id: companyId,
     };
 
-    const response = await deleteCompany(data);
-    console.log(response.data);
-    if (response.status === 200) {
-      alert("Company deleted successfully");
-      setdeleteStatus(!deleteStatus);
-    } else {
-      alert("invalid credentials");
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const response = await deleteCompany(data);
+        console.log(response.data);
+
+        if (response.status === 200) {
+          Swal.fire("Deleted!", "Your Company has been deleted.", "success");
+          setdeleteStatus(!deleteStatus);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong!",
+          });
+        }
+      }
+    });
+
   };
 
   useEffect(() => {
@@ -183,8 +205,9 @@ const ShowCompanies = () => {
                                     deleteCompanyDetails(item._id);
                                   }}
                                 >
-                                  <i className="feather-delete" />
+                                  <i className="fa fa-trash" />
                                 </a>
+
                                 {/* ------------------------------------------------------------------------------------------------------- */}
                               </td>
                             </tr>

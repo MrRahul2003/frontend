@@ -7,7 +7,6 @@ const About = ({ enquiryInfo }) => {
         <div className="row">
           <div className="col-lg-9">
             <div className="card">
-                
               <div className="card-body">
                 <h5 className="card-title d-flex justify-content-between">
                   <span>Enquiry Information</span>
@@ -69,10 +68,9 @@ const About = ({ enquiryInfo }) => {
                   </table>
                 </div>
               </div>
-
             </div>
           </div>
-          
+
           <div className="col-lg-3">
             <div className="card">
               <div className="card-body">
@@ -90,9 +88,7 @@ const About = ({ enquiryInfo }) => {
                   <p className="col-sm-3 text-muted text-sm-end mb-0 mb-sm-3">
                     Last Modified on
                   </p>
-                  <p className="col-sm-9">
-                    {enquiryInfo.lastmodifydate}
-                  </p>
+                  <p className="col-sm-9">{enquiryInfo.lastmodifydate}</p>
                 </div>
               </div>
             </div>

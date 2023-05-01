@@ -3,11 +3,7 @@ import { NavLink, useLocation } from "react-router-dom";
 
 // components
 import BreadCrumb from "./components/BreadCrumb";
-
 import About from "./enquirysection/About";
-
-// import Contacts from "../companysection/Contacts";
-// import Timeline from "../companysection/Timeline";
 
 const EnquirySection = () => {
   // ---------------------getting company info section from navlink--------------------------------

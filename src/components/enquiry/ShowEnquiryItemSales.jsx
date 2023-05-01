@@ -66,7 +66,7 @@ const ShowEnquiryItemSales = () => {
                       <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Make</th>
+                        <th>Make</th> 
                         <th>Modal No</th>
                         <th>Part No</th>
                       </tr>

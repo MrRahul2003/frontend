@@ -6,59 +6,61 @@ import Numbers from "./components/Numbers";
 // Api
 import { getPipelineEnquiry } from "../Api/Enquiry";
 
-// context hooks
-import { LoginContext } from "../context/LoginProvider";
+// Api
+import { getAllCompanys } from "../Api/Company";
+import { getAllContacts } from "../Api/Contact";
+import { getAllVendor } from "../Api/Vendor";
 
 const MainPipeline = () => {
-  // const { email, loginId } = useContext(LoginContext);
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
 
   const [AllEnquiry, setAllEnquiry] = useState([]);
+  const [allCompanies, setAllCompanies] = useState([]);
+  const [allContact, setAllContact] = useState([]);
+  const [allVendor, setAllVendor] = useState([]);
 
-  // --------------get all contact enquiry and storing them in single array-------------------------------
-
-  const getAllEnquiryData = async () => {
+  //  ---------------------fetching all companies from database related to login user-------------------------
+  const getAllCompaniesData = async () => {
     const data = {
       employee_id: loginId,
       employee_email: email,
     };
 
-    const response = await getPipelineEnquiry(data);
-    console.log("all enquiry pipeline", response.data);
-
-    for (var i in response.data) {
-      console.log(response.data[i].enquiry);
-      var enquiriesData = response.data[i].enquiry;
-      for (var i in enquiriesData) {
-        console.log(enquiriesData[i]);
-        setAllEnquiry((preVal) => {
-          return [...preVal, enquiriesData[i]];
-        });
-      }
-    }
+    const response = await getAllCompanys(data);
+    console.log(response.data.companies);
+    setAllCompanies(response.data.companies);
   };
+  // -----------------------------------------------------------------------------------------------------------
+  //  ---------------------fetching all contacts from database related to login user-------------------------
+  const getAllContactData = async () => {
+    const data = {
+      employee_id: loginId,
+      employee_email: email,
+    };
 
+    const response = await getAllContacts(data);
+    console.log(response.data.contacts);
+    setAllContact(response.data.contacts);
+  };
+  // -----------------------------------------------------------------------------------------------------------
+  //  ---------------------fetching all vendors from database related to login user-------------------------
+  const getAllVendorData = async () => {
+    const data = {
+      employee_id: loginId,
+      employee_email: email,
+    };
+
+    const response = await getAllVendor(data);
+    console.log(response.data);
+    setAllVendor(response.data);
+  };
+  // -----------------------------------------------------------------------------------------------------------
   useEffect(() => {
-    getAllEnquiryData();
+    getAllCompaniesData();
+    getAllContactData();
+    getAllVendorData();
   }, []);
-  // --------------------------------------------------------------------------------------------------
-
-  const displayProgress = (stage) => {
-    console.log(stage);
-    if (stage === "Qualification") {
-      return 20;
-    } else if (stage === "Get Price Quotation") {
-      return 40;
-    } else if (stage === "Negotiation") {
-      return 60;
-    } else if (stage === "Won") {
-      return 80;
-    } else if (stage === "Lost") {
-      return 80;
-    }
-    return 100;
-  };
 
   return (
     <div className="page-wrapper">
@@ -79,7 +81,11 @@ const MainPipeline = () => {
           </div>
         </div>
 
-        <Numbers />
+        <Numbers
+          nocompanies={allCompanies.length}
+          nocontacts={allContact.length}
+          novendors={allVendor.length}
+        />
 
         <div className="row">
           <div className="col-xl-12 d-flex">
@@ -100,49 +106,121 @@ const MainPipeline = () => {
                         <th>Closing Date</th>
                         <th>Adding Date</th>
                         <th>Description</th>
-                        <th>Action</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      {AllEnquiry.map((item, i) => {
-                        var valueProgress = displayProgress(
-                          item.enquiry_stage
-                        )
-                        console.log(valueProgress);
-                        return (
-                          <tr key={i}>
-                            <td>{i + 1}</td>
-                            <td>
-                              <h2>{item.enquiry_name}</h2>
-                            </td>
-                            <td>
-                              <div className="progress progress-sm">
-                                <div
-                                  className="progress-bar bg-success"
-                                  role="progressbar"
-                                  style={{ width: valueProgress }}
-                                  aria-valuenow={valueProgress}
-                                  aria-valuemin={0}
-                                  aria-valuemax={100}
-                                />
-                              </div>
-                            </td>
-                            <td>{item.itemList.length}</td>
-                            <td>{item.enquiry_contact_name}</td>
-                            <td>{item.enquiry_closingDate}</td>
-                            <td>{item.enquiry_addingdate}</td>
-                            <td>{item.enquiry_description}</td>
-                            <td className="text-start"></td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
+                    <tbody></tbody>
                   </table>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+        {/* ------------------------------------------------------------------------ */}
+
+        <div className="row">
+          <div className="col-12 col-lg-12 col-xl-8">
+            {/* <!-- aisha 4 graph ma sara companies contacts ka data ayaga --> */}
+            <div className="row">
+              <div className="col-12 col-lg-12 col-xl-12 d-flex">
+                <div className="card flex-fill comman-shadow">
+                  <div className="card-header">
+                    <div className="row align-items-center">
+                      <div className="col-6">
+                        <h5 className="card-title">Increment No</h5>
+                      </div>
+                      <div className="col-6">
+                        <ul className="chart-list-out">
+                          <li>
+                            <span className="circle-blue" />
+                            Teacher
+                          </li>
+                          <li>
+                            <span className="circle-green" />
+                            Students
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="card-body">
+                    <div id="school-area" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-12 col-lg-12 col-xl-4 d-flex">
+            <div className="card flex-fill comman-shadow">
+              <div className="card-body">
+                <div className="calendar-info calendar-info1">
+                  <div className="up-come-header">
+                    <h2>Companies</h2>
+                  </div>
+
+                  {allCompanies.map((item, i) => {
+                    return (
+                      <>
+                        <div className="calendar-details">
+                          <div className="calendar-box normal-bg">
+                            <div className="calandar-event-name">
+                              <h4>{item.company_name}</h4>
+                              <h5>{item.company_email}</h5>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })}
+                </div>
+                <div className="calendar-info calendar-info1">
+                  <div className="up-come-header">
+                    <h2>Contacts</h2>
+                  </div>
+
+                  {allContact.map((item, i) => {
+                    return (
+                      <>
+                        <div className="calendar-details">
+                          <div className="calendar-box normal-bg">
+                            <div className="calandar-event-name">
+                              <h4>{item.contact_name}</h4>
+                              <h5>{item.contact_email}</h5>
+                            </div>
+                            <span>{item.contact_status}</span>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })}
+                </div>
+                <div className="calendar-info calendar-info1">
+                  <div className="up-come-header">
+                    <h2>Vendors</h2>
+                  </div>
+
+                  {allVendor.map((item, i) => {
+                    return (
+                      <>
+                        <div className="calendar-details">
+                          <div className="calendar-box normal-bg">
+                            <div className="calandar-event-name">
+                              <h4>{item.vendor_name}</h4>
+                              <h5>{item.vendor_email}</h5>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ------------------------------------------------------------------------ */}
       </div>
     </div>
   );

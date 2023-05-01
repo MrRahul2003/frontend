@@ -9,7 +9,7 @@ const AddContacts = () => {
     <>
       <div className="page-wrapper">
         <div className="content container-fluid">
-          <BreadCrumb title="Add Contact" />
+          <BreadCrumb title="Add New Contact" />
           <div className="row">
             <div className="col-sm-12">
               <div className="card comman-shadow">

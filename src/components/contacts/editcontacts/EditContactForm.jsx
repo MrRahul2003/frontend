@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Api
@@ -6,11 +6,16 @@ import { editContact, getContact } from "../../Api/Contact";
 import { getAllCompanys } from "../../Api/Company";
 
 // Context Hooks
-import { LoginContext } from "../../context/LoginProvider";
 import FormHeading from "../components/FormHeading";
 
+// sweet alert
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
 const EditContactForm = ({ contactInfo }) => {
-  // const { email, loginId } = useContext(LoginContext);
+
+  const MySwal = withReactContent(Swal);
+
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
   const navigate = useNavigate();
@@ -72,17 +77,21 @@ const EditContactForm = ({ contactInfo }) => {
       contactDetails.contact_email === "" ||
       contactDetails.contact_status === ""
     ) {
-      alert("Enter the Details before procedding");
+      Swal.fire('Enter all Details before procedding...!')
     } else {
       const response = await editContact(contactDetails);
       console.log(response);
 
       if (response.status === 200) {
-        alert("contact editted successfully");
+        Swal.fire("Good job!", "Changes made successfully!", "success");
         document.getElementById("editcontactform").reset();
         navigate("/contacts/showcontacts");
       } else {
-        alert("invalid credentials");
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        })
       }
     }
   };
@@ -266,7 +275,7 @@ const EditContactForm = ({ contactInfo }) => {
       </div>
 
       <div className="row">
-        <FormHeading title="Address Information" />
+        <FormHeading title="Status Information" />
 
         <div className="col-12 col-sm-4">
           <div className="form-group local-forms">

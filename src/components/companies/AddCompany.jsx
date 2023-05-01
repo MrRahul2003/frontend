@@ -9,7 +9,7 @@ const AddCompany = () => {
     <>
       <div className="page-wrapper">
         <div className="content container-fluid">
-          <BreadCrumb title="Add Company" />
+          <BreadCrumb title="Add New Company" />
           <div className="row">
             <div className="col-sm-12">
               <div className="card comman-shadow">

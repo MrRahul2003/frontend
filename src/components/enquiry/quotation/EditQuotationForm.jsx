@@ -1,18 +1,23 @@
 import React, { useContext, useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+
 // components
+import AllItemList from "./AllItemList";
 
 // Api
-import { LoginContext } from "../../context/LoginProvider";
+import { editQuotation } from "../../Api/Quotation";
 
 // context hooks
-import FormHeading from "../components/FormHeading";
-import AllItemList from "./AllItemList";
-import { addQuotation, editQuotation } from "../../Api/Quotation";
+import { LoginContext } from "../../context/LoginProvider";
+
+// sweet alert
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const EditQuotationForm = ({quotationInfo, enquiryInfo}) => {
-  // const { email, loginId } = useContext(LoginContext);
+
+  const MySwal = withReactContent(Swal);
+
   const { updateStatus, setUpdateStatus } = useContext(LoginContext);
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
@@ -78,7 +83,7 @@ const EditQuotationForm = ({quotationInfo, enquiryInfo}) => {
       itemInfo.item_quantity !== "" ||
       itemInfo.item_total_price !== ""
     ) {
-      alert("Enter the Details or add item to list");
+      Swal.fire('Enter all Details before procedding...!')
     } else {
       const data = {
         employee_id: loginId,
@@ -95,13 +100,17 @@ const EditQuotationForm = ({quotationInfo, enquiryInfo}) => {
       console.log(response);
 
       if (response.status === 200) {
-        alert("quotation edited successfully");
+        Swal.fire("Good job!", "Changes made successfully!", "success");
         document.getElementById("addquotaionform").reset();
         setUpdateStatus(!updateStatus);
         setItemList([]);
         navigate("/enquirysales/showenquiry");
       } else {
-        alert("invalid credentials");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
       }
     }
   };

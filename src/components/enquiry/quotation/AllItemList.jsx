@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
 const AllItemList = (props) => {
@@ -58,9 +58,7 @@ const AllItemList = (props) => {
                           <tr key={i}>
                             <td>{i + 1}</td>
                             <td>
-                              <h2>
-                              {item.item_name}
-                              </h2>
+                              <h2>{item.item_name}</h2>
                             </td>
                             <td>{item.item_make}</td>
                             <td>{item.item_modalNo}</td>
@@ -69,15 +67,15 @@ const AllItemList = (props) => {
                             <td>{item.item_quantity}</td>
                             <td>{item.item_total_price}</td>
                             <td>
-                                <a
-                                  className="btn btn-sm bg-danger-light"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    deleteItem(i);
-                                  }}
-                                >
-                                  <i className="feather-delete" />
-                                </a>
+                              <a
+                                className="btn btn-sm bg-danger-light"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  deleteItem(i);
+                                }}
+                              >
+                                <i className="feather-delete" />
+                              </a>
                             </td>
                           </tr>
                         );

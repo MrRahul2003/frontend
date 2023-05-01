@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { CSVLink } from "react-csv";
 
@@ -9,11 +9,13 @@ import Filter from "./components/Filter";
 // Api
 import { deleteSubProduct, getAllSubProduct } from "../Api/SubProduct";
 
-// context hooks
-import { LoginContext } from "../context/LoginProvider";
+// sweet alert
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const ShowSubProducts = () => {
-  // const { email, loginId } = useContext(LoginContext);
+  const MySwal = withReactContent(Swal);
+
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
   let location = useLocation();
@@ -57,14 +59,31 @@ const ShowSubProducts = () => {
       subproduct_id: subproductId,
     };
 
-    const response = await deleteSubProduct(data);
-    console.log(response.data);
-    if (response.status === 200) {
-      alert("subproduct deleted successfully");
-      setdeleteStatus(!deleteStatus);
-    } else {
-      alert("invalid credentials");
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const response = await deleteSubProduct(data);
+        console.log(response.data);
+
+        if (response.status === 200) {
+          Swal.fire("Deleted!", "Your Subproduct has been deleted.", "success");
+          setdeleteStatus(!deleteStatus);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong!",
+          });
+        }
+      }
+    });
   };
 
   useEffect(() => {
@@ -157,7 +176,7 @@ const ShowSubProducts = () => {
                               <td>{item.subproduct_price}</td>
                               <td>{item.subproduct_desc}</td>
                               <td>{item.subproduct_addingdate}</td>
-                              <td className="text-end">
+                              <td className="">
                                 <a
                                   href=""
                                   className="btn btn-sm bg-success-light me-2"
@@ -172,7 +191,7 @@ const ShowSubProducts = () => {
                                   <i className="feather-delete" />
                                 </a>
 
-                                <NavLink
+                                {/* <NavLink
                                   className="btn btn-sm bg-danger-light"
                                   to="/subproducts/editsubproduct"
                                   state={{
@@ -180,7 +199,7 @@ const ShowSubProducts = () => {
                                   }}
                                 >
                                   <i className="feather-edit" />
-                                </NavLink>
+                                </NavLink> */}
                               </td>
                             </tr>
                           );

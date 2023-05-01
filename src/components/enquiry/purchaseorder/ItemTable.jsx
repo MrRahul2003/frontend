@@ -13,34 +13,6 @@ const ItemTable = ({ ItemList }) => {
                 </div>
                 <div className="invoice-head">
                   <h2>AEGIS PROJECTS TECHNOLOGY PVT. LTD.</h2>
-                  {/* <p>Invoice Number : In983248782</p> */}
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="invoice-info">
-                  <strong className="customer-text-one">Invoice From</strong>
-                  <h6 className="invoice-name">
-                    AEGIS PROJECTS TECHNOLOGY PVT. LTD.
-                  </h6>
-                  <p className="invoice-details">
-                    Office No 01,
-                    <br />
-                    Swami Samarth Building,
-                    <br />
-                    Opp. Sangrila Biscuits Company,
-                    <br />
-                    Next to Kala Udyog, LBS MARG,
-                    <br />
-                    Bhandup ( west),
-                    <br />
-                    Mumbai – 400078,
-                    <br />
-                    Maharashtra (INDIA)
-                    <br />
-                    <h6 className="invoice-name">
-                      Issue Date: {new Date().toLocaleString()}
-                    </h6>
-                  </p>
                 </div>
               </div>
             </div>
@@ -83,28 +55,8 @@ const ItemTable = ({ ItemList }) => {
               </div>
             </div>
           </div>
-          <div className="row align-items-center justify-content-center">
-            <div className="col-lg-12 col-md-12">
-              <div className="invoice-terms">
-                <h6>Notes:</h6>
-                <p className="mb-0">
-                  Enter customer notes or any other details
-                </p>
-              </div>
-              <div className="invoice-terms">
-                <h6>Terms and Conditions:</h6>
-                <p className="mb-0">
-                  Enter customer notes or any other details
-                </p>
-              </div>
-            </div>
-          </div>
+
           <div className="invoice-sign text-end">
-            <img
-              className="img-fluid d-inline-block w-5"
-              src="/sign.png"
-              alt="sign"
-            />
             <span className="d-block">Mr. Rajendra Maurya</span>
           </div>
         </div>

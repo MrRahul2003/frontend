@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
+// components
 import AllItemList from "./AllItemList";
 import FormHeading from "../components/FormHeading";
 import BreadCrumb from "../components/BreadCrumb";
@@ -9,17 +10,19 @@ import BreadCrumb from "../components/BreadCrumb";
 // Api
 import { addEnquiry } from "../../Api/Enquiry";
 
-// context hooks
-import { LoginContext } from "../../context/LoginProvider";
+// sweet alert
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const AddEnquiry = () => {
-  // ---------------------getting contact section info from navlink--------------------------------
+  const MySwal = withReactContent(Swal);
+
+  // ---------------------getting enquiry info from navlink--------------------------------
   let location = useLocation();
   console.log("Enquiry information is: ", location.state.contactInfo);
   const contactInfo = location.state.contactInfo;
   // ---------------------------------------------------------------------------------------
 
-  // const { email, loginId } = useContext(LoginContext);
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
   const navigate = useNavigate();
@@ -69,6 +72,7 @@ const AddEnquiry = () => {
       };
     });
   };
+
   // finally storing the onchanging item in ItemList
   const AddItemList = () => {
     setItemList((preVal) => {
@@ -76,10 +80,10 @@ const AddEnquiry = () => {
     });
 
     setItemInfo({
-        item_name: "",
-        item_make: "",
-        item_modalNo: "",
-        item_partNo: "", 
+      item_name: "",
+      item_make: "",
+      item_modalNo: "",
+      item_partNo: "",
     });
   };
   // -----------------------------------------------------------------------------------------------
@@ -96,7 +100,7 @@ const AddEnquiry = () => {
       itemInfo.item_modalNo !== "" ||
       itemInfo.item_partNo !== ""
     ) {
-      alert("Enter the Details or add item to list");
+      Swal.fire("Enter all Details or add item to list before procedding!");
     } else {
       const data = {
         employee_id: loginId,
@@ -117,12 +121,16 @@ const AddEnquiry = () => {
       console.log(response);
 
       if (response.status === 200) {
-        alert("enquiry added successfully");
+        Swal.fire("Good job!", "New Enquiry added successfully!", "success");
+
         document.getElementById("addenquiryform").reset();
         navigate("/contacts/showcontacts");
-
       } else {
-        alert("invalid credentials");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
       }
     }
   };
@@ -143,7 +151,7 @@ const AddEnquiry = () => {
     <>
       <div className="page-wrapper">
         <div className="content container-fluid">
-          <BreadCrumb title="Add Enquiry" />
+          <BreadCrumb title="Add New Enquiry" />
           <div className="row">
             <div className="col-sm-12">
               <div className="card comman-shadow">

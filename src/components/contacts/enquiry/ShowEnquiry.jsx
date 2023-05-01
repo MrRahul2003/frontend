@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { CSVLink } from "react-csv";
 
-import FormHeading from "../components/FormHeading";
 import BreadCrumb from "../components/BreadCrumb";
 import Filter from "../showcontacts/Filter";
 
@@ -12,17 +11,21 @@ import { deleteEnquiry, getAllEnquiry } from "../../Api/Enquiry";
 // context hooks
 import { LoginContext } from "../../context/LoginProvider";
 
+// sweet alert
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
 const ShowEnquiry = () => {
+
+  const MySwal = withReactContent(Swal);
+
   // ---------------------getting contact section info from navlink--------------------------------
   let location = useLocation();
   console.log("Enquiry information is: ", location.state.contactInfo);
   const contactInfo = location.state.contactInfo;
   // ---------------------------------------------------------------------------------------
 
-  const {
-
-    display,
-  } = useContext(LoginContext);
+  const { display } = useContext(LoginContext);
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
 
@@ -56,14 +59,31 @@ const ShowEnquiry = () => {
       enquiry_id: enquiryId,
     };
 
-    const response = await deleteEnquiry(data);
-    console.log(response.data);
-    if (response.status === 200) {
-      alert("Company deleted successfully");
-      setdeleteStatus(!deleteStatus);
-    } else {
-      alert("invalid credentials");
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const response = await deleteEnquiry(data);
+        console.log(response.data);
+
+        if (response.status === 200) {
+          Swal.fire("Deleted!", "Your Enquiry has been deleted.", "success");
+          setdeleteStatus(!deleteStatus);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong!",
+          });
+        }
+      }
+    });
   };
 
   useEffect(() => {
@@ -152,21 +172,23 @@ const ShowEnquiry = () => {
                               <td>{item.enquiry_addingdate}</td>
                               <td>{item.enquiry_description}</td>
                               <td className="">
-  
-                                  <NavLink
+                                <NavLink
                                   to="/contacts/enquiry/showenquiryitems"
                                   className="btn btn-sm bg-success-light me-2"
                                   state={{ enquiryInfo: item }}
                                 >
-                                  <i className="feather-eye" />
+                                  <i className="fa fa-eye" />
                                 </NavLink>
 
                                 <NavLink
                                   to="/contacts/enquiry/editenquiry"
                                   className="btn btn-sm bg-success-light me-2"
-                                  state={{ enquiryInfo: item, contactInfo: contactInfo }}
+                                  state={{
+                                    enquiryInfo: item,
+                                    contactInfo: contactInfo,
+                                  }}
                                 >
-                                  <i className="feather-edit" />
+                                  <i className="fa fa-edit" />
                                 </NavLink>
 
                                 <a
@@ -176,7 +198,7 @@ const ShowEnquiry = () => {
                                     deleteEnquiryDetails(item._id);
                                   }}
                                 >
-                                  <i className="feather-delete" />
+                                  <i className="fa fa-trash" />
                                 </a>
                               </td>
                             </tr>

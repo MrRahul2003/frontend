@@ -1,11 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+
+// api
 import { genProduct, sendProduct } from "../../Api/Product";
 import { getContact } from "../../Api/Contact";
 
+// sweet alert
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
 const AllItemList = (props) => {
-  // const { email, loginId } = useContext(LoginContext);
+  const MySwal = withReactContent(Swal);
+
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
   const navigate = useNavigate();
@@ -15,7 +21,6 @@ const AllItemList = (props) => {
   };
 
   const [AllItemsData, setAllItemsData] = useState([]);
-  const [num, setnum] = useState();
   const [contactDetails, setcontactDetails] = useState({});
 
   useEffect(() => {
@@ -27,12 +32,12 @@ const AllItemList = (props) => {
       const data = {
         employee_id: props.enquiryInfo.employee_id,
         employee_email: props.enquiryInfo.employee_email,
-        contact_id: props.enquiryInfo.enquiry_contact_id
-      }
+        contact_id: props.enquiryInfo.enquiry_contact_id,
+      };
       const response = await getContact(data);
       console.log(response.data.contacts[0]);
-      setcontactDetails(response.data.contacts[0])
-    }
+      setcontactDetails(response.data.contacts[0]);
+    };
     getContactUserData();
   }, []);
 
@@ -51,18 +56,41 @@ const AllItemList = (props) => {
     console.log(response);
 
     if (response.status === 200) {
-      alert("purchase order generated successfully");
+      Swal.fire({
+        title: "Product Purchase Order has been generated?",
+        text: "Do you wish to send it on Mail to customer!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Send it!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const res = await sendProduct(data);
+          console.log(res.data);
 
-      const res = await sendProduct(data);
-      console.log(res);
-      if (response.status === 200) {
-        alert("mail send successfully");
-        navigate("/enquirysales/showenquiry");
-      } else {
-        alert("invalid credentials");
-      }
+          if (res.status === 200) {
+            Swal.fire(
+              "Sent!",
+              "Your Product Purchase Order has been sent.",
+              "success"
+            );
+            navigate("/enquirysales/showenquiry");
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Something went wrong!",
+            });
+          }
+        }
+      });
     } else {
-      alert("invalid credentials");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+      });
     }
   };
 
@@ -76,17 +104,6 @@ const AllItemList = (props) => {
                 <div className="row align-items-center">
                   <div className="col">
                     <h3 className="page-title">Items</h3>
-                  </div>
-                  <div className="col-auto text-end float-end ms-auto download-grp">
-                    <a href="#" className="btn btn-outline-primary me-2">
-                      <i className="fas fa-download" /> Download
-                    </a>
-                    <NavLink
-                      to="/contacts/addcontacts"
-                      className="btn btn-primary"
-                    >
-                      <i className="fas fa-plus" />
-                    </NavLink>
                   </div>
                 </div>
               </div>
@@ -118,10 +135,11 @@ const AllItemList = (props) => {
                               <td>{item.item_make}</td>
                               <td>{item.item_modalNo}</td>
                               <td>{item.item_partNo}</td>
-                              
+
                               <td>
                                 <input
                                   type="Number"
+                                  className="col-md-3 form-control"
                                   id={"item_price" + i}
                                   onChange={() => {
                                     let q = document.getElementById(
@@ -136,10 +154,11 @@ const AllItemList = (props) => {
                                   }}
                                 />
                               </td>
-                              
+
                               <td>
                                 <input
                                   type="Number"
+                                  className="col-md-3 form-control"
                                   id={"item_quantity" + i}
                                   onChange={() => {
                                     let q = document.getElementById(
@@ -154,10 +173,11 @@ const AllItemList = (props) => {
                                   }}
                                 />
                               </td>
-                              
+
                               <td>
                                 <input
                                   type="Number"
+                                  className="col-md-3 form-control"
                                   id={"item_total_price" + i}
                                   onChange={() => {
                                     let q = document.getElementById(

@@ -90,9 +90,7 @@ const About = ({ companyInfo }) => {
                   <p className="col-sm-3 text-muted text-sm-end mb-0 mb-sm-3">
                     Last Modified on
                   </p>
-                  <p className="col-sm-9">
-                    {companyInfo.lastmodifydate}
-                  </p>
+                  <p className="col-sm-9">{companyInfo.lastmodifydate}</p>
                 </div>
               </div>
             </div>

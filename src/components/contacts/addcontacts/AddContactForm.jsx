@@ -8,11 +8,13 @@ import FormHeading from "../components/FormHeading";
 import { addContact } from "../../Api/Contact";
 import { getAllCompanys } from "../../Api/Company";
 
-// Context Hooks
-import { LoginContext } from "../../context/LoginProvider";
+// sweet alert
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const AddContactForm = () => {
-  // const { email, loginId } = useContext(LoginContext);
+  const MySwal = withReactContent(Swal);
+
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
   const navigate = useNavigate();
@@ -77,7 +79,7 @@ const AddContactForm = () => {
       contactDetails.contact_email === "" ||
       contactDetails.contact_status === ""
     ) {
-      alert("Enter the Details before procedding");
+      Swal.fire('Enter all Details before procedding...!')
     } else {
       const data = {
         employee_id: loginId,
@@ -105,11 +107,20 @@ const AddContactForm = () => {
       console.log(response);
 
       if (response.status === 200) {
-        alert("New contact added successfully");
+        Swal.fire(
+          'Good job!',
+          'New Contact added successfully!',
+          'success'
+        )
+
         document.getElementById("addcontactform").reset();
         navigate("/contacts/showcontacts");
       } else {
-        alert("invalid credentials");
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        })
       }
     }
   };
@@ -288,7 +299,7 @@ const AddContactForm = () => {
         </div>
 
         <div className="row">
-          <FormHeading title="Address Information" />
+          <FormHeading title="Status Information" />
 
           <div className="col-12 col-sm-4">
             <div className="form-group local-forms">

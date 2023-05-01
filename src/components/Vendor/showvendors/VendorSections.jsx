@@ -4,7 +4,6 @@ import { NavLink, useLocation } from "react-router-dom";
 // components
 import BreadCrumb from "../components/BreadCrumb";
 import About from "../vendorsection/About";
-import Timeline from "../vendorsection/Timeline";
 
 const VendorSections = () => {
   // ---------------------getting vendor info section from navlink--------------------------------
@@ -54,22 +53,12 @@ const VendorSections = () => {
                       About
                     </a>
                   </li>
-                  <li className="nav-item">
-                    <a
-                      className="nav-link"
-                      data-bs-toggle="tab"
-                      href="#timeline"
-                    >
-                      Timeline
-                    </a>
-                  </li>
                 </ul>
               </div>
 
               <div className="tab-content profile-tab-cont">
                 <About vendorInfo={vendorInfo} />
 
-                <Timeline />
               </div>
             </div>
           </div>

@@ -6,14 +6,19 @@ import { deleteNotes, getAllNotes } from "../../Api/CompanyNotes";
 // context hooks
 import { LoginContext } from "../../context/LoginProvider";
 
+// sweet alert
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
 const Notes = ({ companyInfo }) => {
+  const MySwal = withReactContent(Swal);
+
   const [allCompanyNotes, setAllCompanyNotes] = useState([]);
 
-  const { updateStatus, setUpdateStatus } =
-    useContext(LoginContext);
+  const { updateStatus, setUpdateStatus } = useContext(LoginContext);
 
-    const loginId = localStorage.getItem("loginId");
-    const email = localStorage.getItem("email");
+  const loginId = localStorage.getItem("loginId");
+  const email = localStorage.getItem("email");
 
   // --------------get all company notes related to this company----------------------------------------
   const getAllCompaniesNotesData = async () => {
@@ -82,14 +87,35 @@ const Notes = ({ companyInfo }) => {
                                     note_id: item._id,
                                   };
 
-                                  const response = await deleteNotes(data);
-                                  console.log(response.data);
-                                  if (response.status === 200) {
-                                    alert("Company notes deleted successfully");
-                                    setUpdateStatus(!updateStatus);
-                                  } else {
-                                    alert("invalid credentials");
-                                  }
+                                  Swal.fire({
+                                    title: "Are you sure?",
+                                    text: "You won't be able to revert this!",
+                                    icon: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#3085d6",
+                                    cancelButtonColor: "#d33",
+                                    confirmButtonText: "Yes, delete it!",
+                                  }).then(async (result) => {
+                                    if (result.isConfirmed) {
+                                      const response = await deleteNotes(data);
+                                      console.log(response.data);
+
+                                      if (response.status === 200) {
+                                        Swal.fire(
+                                          "Deleted!",
+                                          "Your Note has been deleted.",
+                                          "success"
+                                        );
+                                        setUpdateStatus(!updateStatus);
+                                      } else {
+                                        Swal.fire({
+                                          icon: "error",
+                                          title: "Oops...",
+                                          text: "Something went wrong!",
+                                        });
+                                      }
+                                    }
+                                  });
                                 }}
                               >
                                 <i className="feather-delete" />

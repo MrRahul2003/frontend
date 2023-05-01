@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { CSVLink } from "react-csv";
 
@@ -10,11 +10,13 @@ import Filter from "./components/Filter";
 import { deleteProduct, getAllProduct } from "../Api/Product";
 import { deleteEntireSubProduct } from "../Api/SubProduct";
 
-// context hooks
-import { LoginContext } from "../context/LoginProvider";
+// sweet alert
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const ShowProducts = () => {
-  // const { email, loginId } = useContext(LoginContext);
+  const MySwal = withReactContent(Swal);
+
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
 
@@ -47,22 +49,49 @@ const ShowProducts = () => {
       product_id: productId,
     };
 
-    const response = await deleteProduct(data);
-    console.log(response.data);
-    if (response.status === 200) {
-      alert("product deleted successfully");
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const response = await deleteProduct(data);
+        console.log(response.data);
 
-      const response = await deleteEntireSubProduct(data);
-      console.log(response.data);
-      if (response.status === 200) {
-        alert("entire subproduct deleted successfully");
-        setdeleteStatus(!deleteStatus);
-      } else {
-        alert("invalid credentials");
+        if (response.status === 200) {
+          const res = await deleteEntireSubProduct(data);
+          console.log(res.data);
+
+          if (res.status === 200) {
+            Swal.fire(
+              "Deleted!",
+              "Your Product and subproduct has been deleted.",
+              "success"
+            );
+            setdeleteStatus(!deleteStatus);
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Something went wrong!",
+            });
+          }
+
+          setdeleteStatus(!deleteStatus);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong!",
+          });
+        }
       }
-    } else {
-      alert("invalid credentials");
-    }
+    });
+
   };
   useEffect(() => {
     getAllProductData();
@@ -134,7 +163,7 @@ const ShowProducts = () => {
                         {products.map((item, i) => {
                           return (
                             <tr key={i}>
-                              <td>{i+1}</td>
+                              <td>{i + 1}</td>
                               <td>
                                 <h2>
                                   <NavLink
@@ -153,26 +182,26 @@ const ShowProducts = () => {
                               <td>{item.product_desc}</td>
                               <td>{item.product_addingdate}</td>
                               <td className="text-start">
-                                  <NavLink
-                                    className="btn btn-sm bg-success-light me-2"
-                                    to="/subproducts/showsubproducts"
-                                    state={{
-                                      product_id: item._id,
-                                      product_name: item.product_name,
-                                    }}
-                                  >
-                                    <i className="feather-eye" />
-                                  </NavLink>
-                                  <a
-                                    href="edit-subject.html"
-                                    className="btn btn-sm bg-danger-light me-2"
-                                    onClick={async (e) => {
-                                      e.preventDefault();
-                                      deleteProductData(item._id);
-                                    }}
-                                  >
-                                    <i className="feather-delete" />
-                                  </a>
+                                <NavLink
+                                  className="btn btn-sm bg-success-light me-2"
+                                  to="/subproducts/showsubproducts"
+                                  state={{
+                                    product_id: item._id,
+                                    product_name: item.product_name,
+                                  }}
+                                >
+                                  <i className="feather-eye" />
+                                </NavLink>
+                                <a
+                                  href="edit-subject.html"
+                                  className="btn btn-sm bg-danger-light me-2"
+                                  onClick={async (e) => {
+                                    e.preventDefault();
+                                    deleteProductData(item._id);
+                                  }}
+                                >
+                                  <i className="feather-delete" />
+                                </a>
                               </td>
                             </tr>
                           );

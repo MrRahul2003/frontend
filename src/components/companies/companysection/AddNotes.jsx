@@ -1,16 +1,23 @@
 import React, { useState, useContext } from "react";
+
 // Api
 import { addNotes } from "../../Api/CompanyNotes";
 
 // context hooks
 import { LoginContext } from "../../context/LoginProvider";
 
-const AddNotes = ({ companyInfo }) => {
-  const { updateStatus, setUpdateStatus } =
-    useContext(LoginContext);
+// sweet alert
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
-    const loginId = localStorage.getItem("loginId");
-    const email = localStorage.getItem("email");
+const AddNotes = ({ companyInfo }) => {
+
+  const MySwal = withReactContent(Swal);
+
+  const { updateStatus, setUpdateStatus } = useContext(LoginContext);
+
+  const loginId = localStorage.getItem("loginId");
+  const email = localStorage.getItem("email");
 
   // storing all notes data in usestate
   const [notesDetails, setnotesDetails] = useState({
@@ -38,7 +45,7 @@ const AddNotes = ({ companyInfo }) => {
     const note_addingdate = new Date().toLocaleString();
 
     if (notesDetails.note_title === "" || notesDetails.note_desc === "") {
-      alert("Enter the Details before procedding");
+      Swal.fire("Enter all Details before procedding...!");
     } else {
       const data = {
         employee_id: loginId,
@@ -57,11 +64,15 @@ const AddNotes = ({ companyInfo }) => {
       console.log(response);
 
       if (response.status === 200) {
-        alert("company notes added successfully");
+        Swal.fire("Good job!", "New Note added successfully!", "success");
         document.getElementById("companynotesform").reset();
         setUpdateStatus(!updateStatus);
       } else {
-        alert("invalid credentials");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
       }
     }
   };

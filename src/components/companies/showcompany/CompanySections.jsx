@@ -6,8 +6,6 @@ import BreadCrumb from "../components/BreadCrumb";
 import About from "../companysection/About";
 import Notes from "../companysection/Notes";
 import AddNotes from "../companysection/AddNotes";
-import Contacts from "../companysection/Contacts";
-import Timeline from "../companysection/Timeline";
 
 const CompanySections = () => {
   // ---------------------getting company info section from navlink--------------------------------
@@ -61,15 +59,6 @@ const CompanySections = () => {
                     <a
                       className="nav-link"
                       data-bs-toggle="tab"
-                      href="#timeline"
-                    >
-                      Timeline
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      className="nav-link"
-                      data-bs-toggle="tab"
                       href="#addnotes"
                     >
                       Add Notes
@@ -84,27 +73,15 @@ const CompanySections = () => {
                       Show Notes
                     </a>
                   </li>
-                  <li className="nav-item">
-                    <a
-                      className="nav-link"
-                      data-bs-toggle="tab"
-                      href="#contacts"
-                    >
-                      Contacts
-                    </a>
-                  </li>
                 </ul>
               </div>
 
               <div className="tab-content profile-tab-cont">
                 <About companyInfo={companyInfo} />
 
-                <Timeline />
-
                 <Notes companyInfo={companyInfo} />
                 <AddNotes companyInfo={companyInfo} />
 
-                <Contacts companyInfo={companyInfo} />
               </div>
             </div>
           </div>

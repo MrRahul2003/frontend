@@ -1,27 +1,27 @@
 import React, { useContext, useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
+// components
 import BreadCrumb from "./components/BreadCrumb";
 import FormHeading from "./components/FormHeading";
 
 // Api
 import { editEnquiry } from "../Api/Enquiry";
 
-// context hooks
-import { LoginContext } from "../context/LoginProvider";
+// sweet alert
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const EditEnquirySales = () => {
+
+  const MySwal = withReactContent(Swal);
+
   // ---------------------getting enquiry section info from navlink--------------------------------
   let location = useLocation();
   console.log("Enquiry information is: ", location.state.enquiryInfo);
   const EnquiryInfo = location.state.enquiryInfo;
   // ---------------------------------------------------------------------------------------
 
-  const { editenquiryInfo, display, setDisplay } =
-    useContext(LoginContext);
-    const loginId = localStorage.getItem("loginId");
-    const email = localStorage.getItem("email");
   const navigate = useNavigate();
 
   // ---------------When the page loads enquiryInfo and ItemList is updated---------------------------------------------
@@ -30,11 +30,8 @@ const EditEnquirySales = () => {
 
   useEffect(() => {
     setenquiryInfo({
-      enquiry_stage: EnquiryInfo.enquiry_stage
+      enquiry_stage: EnquiryInfo.enquiry_stage,
     });
-
-    
-
   }, []);
 
   // updating the edit enquiry form data on changing the values
@@ -51,14 +48,12 @@ const EditEnquirySales = () => {
   };
   // -----------------------------------------------------------------------------------------------
 
- // on submitting the form sending the data to database using axios api
+  // on submitting the form sending the data to database using axios api
   const submitForm = async (e) => {
     e.preventDefault();
 
-    if (
-      enquiryInfo.enquiry_stage === ""
-    ) {
-      alert("Enter the Details or add item to list");
+    if (enquiryInfo.enquiry_stage === "") {
+      Swal.fire('Enter all Details before procedding...!')
     } else {
       const data = {
         employee_id: EnquiryInfo.employee_id,
@@ -71,19 +66,22 @@ const EditEnquirySales = () => {
         enquiry_closingDate: EnquiryInfo.enquiry_closingDate,
         enquiry_description: EnquiryInfo.enquiry_description,
 
-        enquiry_stage: enquiryInfo.enquiry_stage
-
+        enquiry_stage: enquiryInfo.enquiry_stage,
       };
 
       const response = await editEnquiry(data);
       console.log(response);
 
       if (response.status === 200) {
-        alert("enquiry edited successfully");
+        Swal.fire("Good job!", "Changes made successfully!", "success");
         document.getElementById("editenquiryform").reset();
         navigate("/enquirysales/showenquiry");
       } else {
-        alert("invalid credentials");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
       }
     }
   };
@@ -92,7 +90,7 @@ const EditEnquirySales = () => {
     <>
       <div className="page-wrapper">
         <div className="content container-fluid">
-          <BreadCrumb title="Edit Enquiry" />
+          <BreadCrumb title="Edit Enquiry Stage" />
           <div className="row">
             <div className="col-sm-12">
               <div className="card comman-shadow">
@@ -125,7 +123,6 @@ const EditEnquirySales = () => {
                           </select>
                         </div>
                       </div>
-
                     </div>
 
                     <div className="col-12">

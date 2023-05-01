@@ -1,16 +1,22 @@
-import React, { useContext, useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { CSVLink } from "react-csv";
-import BreadCrumb from "../components/BreadCrumb";
-import Filter from "../components/Filter";
-import FormHeading from "../components/FormHeading";
-import { LoginContext } from "../../context/LoginProvider";
-import { getAllVendor } from "../../Api/Vendor";
+import React, { useEffect, useState } from "react";
+import { NavLink, useLocation,useNavigate } from "react-router-dom";
+
+// components
 import ItemTable from "./ItemTable";
+
+// api
+import { getAllVendor } from "../../Api/Vendor";
 import { genEnquiry, sendEnquiry } from "../../Api/Enquiry";
 
+// sweet alert
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
 const ShowVendorsSales = () => {
-  // ---------------------getting contact section info from navlink--------------------------------
+  const MySwal = withReactContent(Swal);
+  const navigate = useNavigate();
+
+  // ---------------------getting enquiry info from navlink--------------------------------
   let location = useLocation();
   console.log("Enquiry information is: ", location.state.enquiryInfo);
   const enquiryInfo = location.state.enquiryInfo;
@@ -18,7 +24,6 @@ const ShowVendorsSales = () => {
 
   const [allVendor, setAllVendor] = useState([]);
 
-  // const { email, loginId } = useContext(LoginContext);
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
 
@@ -38,11 +43,11 @@ const ShowVendorsSales = () => {
     getAllVendorData();
   }, []);
   // -----------------------------------------------------------------------------------------------------------
+
   // --------------------storing the checked values here-------------------------------------------------------
   const [isChecked, setIsChecked] = useState([]);
   const handleChange = (e) => {
     const { value, checked } = e.target;
-    // alert(value, checked);
 
     setIsChecked((preVal) => {
       return [...preVal, value];
@@ -56,18 +61,39 @@ const ShowVendorsSales = () => {
     console.log(response);
 
     if (response.status === 200) {
-      alert("enquiry generated successfully");
+      Swal.fire({
+        title: "Enquiry has been generated?",
+        text: "Do you wish to send it on Mail to vendors!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Send it!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const res = await sendEnquiry(data);
+          console.log(res.data);
 
-      const res = await sendEnquiry(data);
-      console.log(res);
-      if (response.status === 200) {
-        alert("mail send successfully");
-      } else {
-        alert("invalid credentials");
-      }
+          if (res.status === 200) {
+            Swal.fire("Sent!", "Your Enquiry has been sent.", "success");
+            navigate("/enquirysales/showenquiry");
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Something went wrong!",
+            });
+          }
+        }
+      });
     } else {
-      alert("invalid credentials");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+      });
     }
+    
   };
 
   // ------------------------csv data--------------------------------------------------------------
@@ -135,21 +161,7 @@ const ShowVendorsSales = () => {
                 <table className="table border-0 star-student table-hover table-center mb-0 datatable table-striped">
                   <thead className="student-thread">
                     <tr>
-                      <th>
-                        {/* <div class="form-check check-tables">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            name="allselect"
-                            onChange={handleChange}
-                            checked={
-                              !allVendor.some((user) => {
-                                user?.isChecked !== true;
-                              })
-                            }
-                          />
-                        </div> */}
-                      </th>
+                      <th></th>
                       <th>Name</th>
                       <th>Email</th>
                     </tr>

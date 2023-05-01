@@ -2,16 +2,18 @@ import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 // components
-import FormHeading from "./FormHeading";
+import FormHeading from "../components/FormHeading";
 
 // Api
 import { editVendor, getVendor } from "../../Api/Vendor";
 
-// Context Hooks
-import { LoginContext } from "../../context/LoginProvider";
+// sweet alert
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const EditVendorForm = ({ vendorInfo }) => {
-  // const { email, loginId } = useContext(LoginContext);
+  const MySwal = withReactContent(Swal);
+  
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
   const navigate = useNavigate();
@@ -53,17 +55,21 @@ const EditVendorForm = ({ vendorInfo }) => {
     e.preventDefault();
 
     if (vendorDetails.vendor_name === "" || vendorDetails.vendor_email === "") {
-      alert("Enter the Details before procedding");
+      Swal.fire("Enter all Details before procedding...!");
     } else {
       const response = await editVendor(vendorDetails);
       console.log(response);
 
       if (response.status === 200) {
-        alert("vendor editted successfully");
+        Swal.fire("Good job!", "Changes made successfully!", "success");
         document.getElementById("editvendorform").reset();
         navigate("/vendors/showvendors");
       } else {
-        alert("invalid credentials");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
       }
     }
   };

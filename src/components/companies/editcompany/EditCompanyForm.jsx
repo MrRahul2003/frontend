@@ -2,16 +2,18 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 // components
-import FormHeading from "./FormHeading";
+import FormHeading from "../components/FormHeading";
 
 // Api
 import { editCompany, getCompany } from "../../Api/Company";
 
-// Context Hooks
-import { LoginContext } from "../../context/LoginProvider";
+// sweet alert
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const EditCompanyForm = ({ companyInfo }) => {
-  // const { email, loginId } = useContext(LoginContext);
+  const MySwal = withReactContent(Swal);
+
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
   const navigate = useNavigate();
@@ -54,21 +56,28 @@ const EditCompanyForm = ({ companyInfo }) => {
   const submitForm = async (e) => {
     e.preventDefault();
 
-    if (companyDetails.company_name === "") {
-      alert("Enter the Details before procedding");
+    if (
+      companyDetails.company_name === "" ||
+      companyDetails.company_email === "" ||
+      companyDetails.company_phone === ""
+    ) {
+      Swal.fire("Enter all Details before procedding...!");
     } else {
       const response = await editCompany(companyDetails);
       console.log(response);
 
       if (response.status === 200) {
-        alert("Company editted successfully");
+        Swal.fire("Good job!", "Changes made successfully!", "success");
         document.getElementById("editcompanyform").reset();
         navigate("/company/showcompanies");
       } else {
-        alert("invalid credentials");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
       }
     }
-    
   };
 
   return (
@@ -96,9 +105,7 @@ const EditCompanyForm = ({ companyInfo }) => {
 
           <div className="col-12 col-sm-4">
             <div className="form-group local-forms">
-              <label>
-                E-Mail 
-              </label>
+              <label>E-Mail</label>
               <input
                 className="form-control"
                 type="text"
@@ -111,9 +118,7 @@ const EditCompanyForm = ({ companyInfo }) => {
 
           <div className="col-12 col-sm-4">
             <div className="form-group local-forms">
-              <label>
-                Phone
-              </label>
+              <label>Phone</label>
               <input
                 className="form-control"
                 type="number"

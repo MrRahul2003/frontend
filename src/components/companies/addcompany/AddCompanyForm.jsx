@@ -1,17 +1,20 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // components
-import FormHeading from "./FormHeading";
+import FormHeading from "../components/FormHeading";
 
 // Api
 import { addCompany } from "../../Api/Company";
-
-// Context Hooks
-import { LoginContext } from "../../context/LoginProvider";
+ 
+// sweet alert
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const AddCompanyForm = () => {
-  // const { email, loginId } = useContext(LoginContext);
+  
+  const MySwal = withReactContent(Swal);
+
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
   const navigate = useNavigate();
@@ -51,9 +54,10 @@ const AddCompanyForm = () => {
 
     if (
       companyDetails.company_name === "" ||
-      companyDetails.company_email === ""
+      companyDetails.company_email === "" ||
+      companyDetails.company_phone === ""
     ) {
-      alert("Enter the Details before procedding");
+      Swal.fire('Enter all Details before procedding...!')
     } else {
       const data = {
         employee_id: loginId,
@@ -74,14 +78,23 @@ const AddCompanyForm = () => {
       };
 
       const response = await addCompany(data);
-      console.log(response);
+      console.log("adding company data getting", response);
 
       if (response.status === 200) {
-        alert("New Company added successfully");
+        Swal.fire(
+          'Good job!',
+          'New Company added successfully!',
+          'success'
+        )
+        
         document.getElementById("addcompanyform").reset();
         navigate("/company/showcompanies");
       } else {
-        alert("invalid credentials");
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        })
       }
     }
   };

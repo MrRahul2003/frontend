@@ -4,7 +4,6 @@ import { NavLink, useLocation } from "react-router-dom";
 // components
 import BreadCrumb from "../components/BreadCrumb";
 import About from "../contactsection/About";
-import Timeline from "../contactsection/Timeline";
 import AddNotes from "../contactsection/AddNotes";
 import Notes from "../contactsection/Notes";
 
@@ -65,15 +64,6 @@ const ContactSections = () => {
                     <a
                       className="nav-link"
                       data-bs-toggle="tab"
-                      href="#timeline"
-                    >
-                      Timeline
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      className="nav-link"
-                      data-bs-toggle="tab"
                       href="#shownotes"
                     >
                       Show Notes
@@ -94,39 +84,10 @@ const ContactSections = () => {
 
               <div className="tab-content profile-tab-cont">
                 <About contactInfo={contactInfo} />
-                <Timeline />
 
                 <Notes contactInfo={contactInfo} />
                 <AddNotes contactInfo={contactInfo} />
 
-                <div className="tab-pane fade" id="contacts">
-                  <div className="card">
-                    <div className="card-body">
-                      <h5 className="card-title">Change Password</h5>
-                      <div className="row">
-                        <div className="col-md-10 col-lg-6">
-                          <form>
-                            <div className="form-group">
-                              <label>Old Password</label>
-                              <input type="password" className="form-control" />
-                            </div>
-                            <div className="form-group">
-                              <label>New Password</label>
-                              <input type="password" className="form-control" />
-                            </div>
-                            <div className="form-group">
-                              <label>Confirm Password</label>
-                              <input type="password" className="form-control" />
-                            </div>
-                            <button className="btn btn-primary" type="submit">
-                              Save Changes
-                            </button>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
