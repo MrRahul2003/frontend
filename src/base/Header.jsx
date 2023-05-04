@@ -1,25 +1,25 @@
 import React, { useContext } from "react";
 import { useProSidebar } from "react-pro-sidebar";
 
-// Context Hooks
-import { LoginContext } from "../components/context/LoginProvider";
+// sweet alert
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const Header = () => {
+  const MySwal = withReactContent(Swal);
+
   const { collapseSidebar } = useProSidebar();
-  const { setusername, setemail, setloginId } = useContext(LoginContext);
-  const loginId = localStorage.getItem("loginId");
+
   const email = localStorage.getItem("email");
   const username = localStorage.getItem("username");
 
   const logout = () => {
-    setusername("");
-    setemail("");
-    setloginId("");
     localStorage.removeItem("login");
     localStorage.removeItem("loginId");
     localStorage.removeItem("email");
     localStorage.removeItem("username");
-    alert("Logout Successful");
+    localStorage.removeItem("userType");
+    Swal.fire("Good job!", `Logged out successfully!`, "success");
   };
   return (
     <>
@@ -29,12 +29,7 @@ const Header = () => {
             <img src="/logo.jpeg" alt="Logo" />
           </a>
           <a href="index.html" className="logo logo-small">
-            <img
-              src="/logo.jpeg"
-              alt="Logo"
-              width={30}
-              height={30}
-            />
+            <img src="/logo.jpeg" alt="Logo" width={30} height={30} />
           </a>
         </div>
         <div className="menu-toggle">
@@ -51,11 +46,7 @@ const Header = () => {
               data-bs-toggle="dropdown"
             >
               <span className="user-img">
-                <img
-                  className="rounded-circle"
-                  src="/logo.jpeg"
-                  width={31}
-                />
+                <img className="rounded-circle" src="/logo.jpeg" width={31} />
                 <div className="user-text">
                   <h6>{username}</h6>
                 </div>

@@ -1,13 +1,16 @@
-import React, { useState,useContext,useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+// api
 import { addLogin } from "../Api/Login";
-import { LoginContext } from "../context/LoginProvider";
+
+// sweet alert
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const Login = () => {
+  const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
-
-  const { username, setusername, email, setemail, loginId, setloginId } = useContext(LoginContext);
 
   const [Login, setLogin] = useState({
     email: "",
@@ -27,7 +30,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    let login = localStorage.getItem('login');
+    let login = localStorage.getItem("login");
     if (login) {
       navigate("/");
     }
@@ -46,27 +49,31 @@ const Login = () => {
     const response = await addLogin(data);
     console.log("sending Login Data", response.data);
 
-    console.log(response);
-
-    if (response.status !== 200) {
-      alert("invalid credentials");
+    if (email === "" || password === "") {
+      Swal.fire("Enter all Details before procedding!");
     } else {
-      alert("New Login added successfully");   
-         
-      localStorage.setItem('login', true);
-      localStorage.setItem('loginId', response.data.loginId);
-      localStorage.setItem('email', response.data.email);
-      localStorage.setItem('username', response.data.username);
+      if (response.status === 200) {
+        Swal.fire(
+          "Good job!",
+          `${response.data.userType} logged successfully!`,
+          "success"
+        );
 
-      // navigate("/");
+        localStorage.setItem("login", true);
+        localStorage.setItem("loginId", response.data.loginId);
+        localStorage.setItem("email", response.data.email);
+        localStorage.setItem("username", response.data.username);
+        localStorage.setItem("userType", response.data.userType);
 
-      setloginId(response.data.loginId);
-      setemail(response.data.email);
-      setusername(response.data.username);
-
-
-      document.getElementById("addloginform").reset();
-      navigate("/pipeline");
+        document.getElementById("addloginform").reset();
+        navigate("/pipeline");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
+      }
     }
   };
 

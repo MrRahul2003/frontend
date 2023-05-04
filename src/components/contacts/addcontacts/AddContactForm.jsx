@@ -1,10 +1,10 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 // components
 import FormHeading from "../components/FormHeading";
 
-// Api
+// Api 
 import { addContact } from "../../Api/Contact";
 import { getAllCompanys } from "../../Api/Company";
 

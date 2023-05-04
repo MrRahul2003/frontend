@@ -70,11 +70,11 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Base />}>
-        <Route path="" element={<Protected Component={MainPipeline} />} />
+        <Route path="" element={<Protected Component={MainPipeline} Comment="admin" />} />
 
         <Route path="/products">
-          <Route path="addproducts" element={<Protected Component={AddProducts}  />} />
-          <Route path="showproducts" element={<Protected Component={ShowProducts}  />} />
+          <Route path="addproducts" element={<Protected Component={AddProducts} Comment="user"  />} />
+          <Route path="showproducts" element={<Protected Component={ShowProducts} Comment="user"  />} />
         </Route>
 
         <Route path="/subproducts">
@@ -89,7 +89,7 @@ function App() {
           <Route path="editcontacts" element={<Protected Component={EditContact}   />} />
 
           <Route path="showcontacts/contactsection"
-            element={<Protected Component={ContactSections}  />}
+            element={<Protected Component={ContactSections} />}
           />
 
           <Route

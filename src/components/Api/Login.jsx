@@ -31,19 +31,6 @@ const addSignin = async (data) => {
   }
 };
 
-// getting all the login data in our database
-const getAllLogin = async (data) => {
-  try {
-    console.log("getAllLogin data sending", data);
-    const response = await axios.post(`${url}/login/getalllogin`, data);
-    console.log("getAllLogin response receiving", response);
-    return response;
-  } catch (error) {
-    console.log("Error while get all login API", error.message);
-    return error;
-  }
-};
-
 // getting a single login data in our database
 const getLogin = async (data) => {
   try {
@@ -57,4 +44,4 @@ const getLogin = async (data) => {
   }
 };
 
-export { addLogin, getAllLogin, getLogin, addSignin };
+export { addLogin, getLogin, addSignin };

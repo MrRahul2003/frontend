@@ -1,10 +1,19 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// api
 import { addSignin } from "../Api/Login";
 
+// sweet alert
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
 const Signin = () => {
+  const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
+
+  const [userType, setUserType] = useState("");
+  const [secretKey, setSecretKey] = useState("");
 
   const [Signin, setSignin] = useState({
     username: "",
@@ -27,28 +36,46 @@ const Signin = () => {
   const submitForm = async (e) => {
     e.preventDefault();
 
-    const { username, email, password } = Signin;
-    const login_addingdate = new Date().toLocaleString();
+    if (userType == "admin" && secretKey != "abc") {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Invalid Secret Key!",
+      });
+    } else {
+      const { username, email, password } = Signin;
+      const login_addingdate = new Date().toLocaleString();
 
-    const data = {
-      username: username,
-      email: email,
-      password: password,
-      login_addingdate: login_addingdate,
-    };
+      const data = {
+        username: username,
+        email: email,
+        password: password,
+        userType: userType,
+        login_addingdate: login_addingdate,
+      };
 
-    const response = await addSignin(data);
-    console.log("sending Signin Data", response.data);
-    // setAllEnquiry(response.data);
+      if (username === "" || email === "" || password === "") {
+        Swal.fire("Enter all Details before procedding!");
+      } else {
+        const response = await addSignin(data);
+        console.log("sending Signin Data", response.data);
 
-    console.log(response);
-
-    if (response.status !== 200) {
-      alert("invalid credentials");
-    }else {
-      alert("New Signin added successfully");
-      document.getElementById("addsigninform").reset();
-      navigate("/authentication/login");
+        if (response.status === 200) {
+          Swal.fire(
+            "Good job!",
+            `New ${userType} added successfully!`,
+            "success"
+          );
+          document.getElementById("addsigninform").reset();
+          navigate("/authentication/login");
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!'
+          })
+        }
+      }
     }
   };
 
@@ -64,6 +91,41 @@ const Signin = () => {
               <div className="login-right-wrap">
                 <h1>Welcome to Aegis Projects</h1>
                 <form id="addsigninform">
+                  <div>
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        onChange={(e) => setUserType(e.target.value)}
+                        value="user"
+                        name="userType"
+                        defaultChecked
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="flexRadioDefault2"
+                      >
+                        User
+                      </label>
+                    </div>
+
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        onChange={(e) => setUserType(e.target.value)}
+                        value="admin"
+                        name="userType"
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="flexRadioDefault1"
+                      >
+                        Admin
+                      </label>
+                    </div>
+                  </div>
+
                   <div className="form-group">
                     <label>
                       User Name <span className="login-danger">*</span>
@@ -110,10 +172,26 @@ const Signin = () => {
                     <span className="profile-views feather-eye toggle-password" />
                   </div>
 
+                  {userType === "admin" ? (
+                    <div className="form-group">
+                      <label>
+                        Secret Key <span className="login-danger">*</span>
+                      </label>
+                      <input
+                        className="form-control pass-input"
+                        type="text"
+                        onChange={(e) => setSecretKey(e.target.value)}
+                        autoComplete="false"
+                        name="secretkey"
+                      />
+                      <span className="profile-views feather-eye toggle-password" />
+                    </div>
+                  ) : null}
                   <div className="form-group">
                     <button
                       className="btn btn-primary btn-block"
                       type="submit"
+                      placeholder="Secret Key"
                       onClick={submitForm}
                     >
                       Signin
