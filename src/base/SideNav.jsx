@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 
 import { NavLink } from "react-router-dom";
 
 const SideNav = () => {
+  var user = localStorage.getItem("userType");
+  var login = localStorage.getItem("login");
+
   return (
     <>
       <div className="sidebar" id="sidebar">
@@ -24,75 +27,85 @@ const SideNav = () => {
                   </MenuItem>
                 </NavLink>
                 {/* ----------------------------------------------------------------------- */}
-                <li className="menu-title mt-3">
-                  <span>Pre Sales</span>
-                </li>
+                {user === "user" ? (
+                  <li className="menu-title mt-3">
+                    <span>Pre Sales</span>
+                  </li>
+                ) : null}
                 {/* ----------------------------- Contacts ---------------------------------- */}
-                <SubMenu
-                  label="Contacts"
-                  icon={<i className="fas fa-users"></i>}
-                >
-                  <NavLink
-                    to="/contacts/showcontacts"
-                    style={{ textDecoration: "none", color: "black" }}
+                {user === "user" ? (
+                  <SubMenu
+                    label="Contacts"
+                    icon={<i className="fas fa-users"></i>}
                   >
-                    <MenuItem>
-                      <i className="fas fa-angle-double-right mx-3"></i>Show
-                      Contacts
-                    </MenuItem>
-                  </NavLink>
-                  <NavLink
-                    to="/contacts/addcontacts"
-                    style={{ textDecoration: "none", color: "black" }}
-                  >
-                    <MenuItem>
-                      <i className="fas fa-angle-double-right mx-3"></i>Add
-                      Contact
-                    </MenuItem>
-                  </NavLink>
-                </SubMenu>
+                    <NavLink
+                      to="/contacts/showcontacts"
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <MenuItem>
+                        <i className="fas fa-angle-double-right mx-3"></i>Show
+                        Contacts
+                      </MenuItem>
+                    </NavLink>
+                    <NavLink
+                      to="/contacts/addcontacts"
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <MenuItem>
+                        <i className="fas fa-angle-double-right mx-3"></i>Add
+                        Contact
+                      </MenuItem>
+                    </NavLink>
+                  </SubMenu>
+                ) : null}
                 {/* ------------------------------------------------------------------------- */}
                 {/* ----------------------------- Company---------------------------------- */}
-                <SubMenu
-                  label="Company"
-                  icon={<i className="fas fa-building"></i>}
-                >
-                  <NavLink
-                    to="/company/showcompanies"
-                    style={{ textDecoration: "none", color: "black" }}
+                {user === "user" ? (
+                  <SubMenu
+                    label="Company"
+                    icon={<i className="fas fa-building"></i>}
                   >
-                    <MenuItem>
-                      <i className="fas fa-angle-double-right mx-3"></i>Show
-                      Company
-                    </MenuItem>
-                  </NavLink>
-                  <NavLink
-                    to="/company/addcompany"
-                    style={{ textDecoration: "none", color: "black" }}
-                  >
-                    <MenuItem>
-                      <i className="fas fa-angle-double-right mx-3"></i>Add
-                      Company
-                    </MenuItem>
-                  </NavLink>
-                </SubMenu>
+                    <NavLink
+                      to="/company/showcompanies"
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <MenuItem>
+                        <i className="fas fa-angle-double-right mx-3"></i>Show
+                        Company
+                      </MenuItem>
+                    </NavLink>
+                    <NavLink
+                      to="/company/addcompany"
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <MenuItem>
+                        <i className="fas fa-angle-double-right mx-3"></i>Add
+                        Company
+                      </MenuItem>
+                    </NavLink>
+                  </SubMenu>
+                ) : null}
                 {/* ------------------------------------------------------------------------- */}
-                <li className="menu-title mt-3">
-                  <span>Sales</span>
-                </li>
+                {user === "admin" ? (
+                  <li className="menu-title mt-3">
+                    <span>Sales</span>
+                  </li>
+                ) : null}
                 {/* ----------------------------- Authentication ---------------------------------- */}
                 <SubMenu
                   label="Authentication"
                   icon={<i className="fas fa-unlock-alt"></i>}
                 >
-                  <NavLink
-                    to="/authentication/signin"
-                    style={{ textDecoration: "none", color: "black" }}
-                  >
-                    <MenuItem>
-                      <i className="fas fa-angle-double-right mx-3"></i>signin
-                    </MenuItem>
-                  </NavLink>
+                  {user === "admin" ? (
+                    <NavLink
+                      to="/authentication/signin"
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <MenuItem>
+                        <i className="fas fa-angle-double-right mx-3"></i>signin
+                      </MenuItem>
+                    </NavLink>
+                  ) : null}
 
                   <NavLink
                     to="/authentication/login"
@@ -105,79 +118,85 @@ const SideNav = () => {
                 </SubMenu>
                 {/* ------------------------------------------------------------------------- */}
                 {/* ----------------------------- Enquiry ---------------------------------- */}
-                <SubMenu
-                  label="Enquiry"
-                  icon={<i className="fas fa-envelope"></i>}
-                >
-                  <NavLink
-                    to="/enquirysales/showenquiry"
-                    style={{ textDecoration: "none", color: "black" }}
+                {user === "admin" ? (
+                  <SubMenu
+                    label="Enquiry"
+                    icon={<i className="fas fa-envelope"></i>}
                   >
-                    <MenuItem>
-                      <i className="fas fa-angle-double-right mx-3"></i>Show
-                      Enquiry
-                    </MenuItem>
-                  </NavLink>
-                </SubMenu>
+                    <NavLink
+                      to="/enquirysales/showenquiry"
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <MenuItem>
+                        <i className="fas fa-angle-double-right mx-3"></i>Show
+                        Enquiry
+                      </MenuItem>
+                    </NavLink>
+                  </SubMenu>
+                ) : null}
                 {/* ------------------------------------------------------------------------- */}
                 {/* ----------------------------- Vendors ---------------------------------- */}
-                <SubMenu
-                  label="Vendors"
-                  icon={<i className="fa fa-archive"></i>}
-                >
-                  <NavLink
-                    to="/vendors/showvendors"
-                    style={{ textDecoration: "none", color: "black" }}
+                {user === "admin" ? (
+                  <SubMenu
+                    label="Vendors"
+                    icon={<i className="fa fa-archive"></i>}
                   >
-                    <MenuItem>
-                      <i className="fas fa-angle-double-right mx-3"></i>Show
-                      Vendors
-                    </MenuItem>
-                  </NavLink>
-                  <NavLink
-                    to="/vendors/addvendors"
-                    style={{ textDecoration: "none", color: "black" }}
-                  >
-                    <MenuItem>
-                      <i className="fas fa-angle-double-right mx-3"></i>Add
-                      Vendors
-                    </MenuItem>
-                  </NavLink>
-                </SubMenu>
+                    <NavLink
+                      to="/vendors/showvendors"
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <MenuItem>
+                        <i className="fas fa-angle-double-right mx-3"></i>Show
+                        Vendors
+                      </MenuItem>
+                    </NavLink>
+                    <NavLink
+                      to="/vendors/addvendors"
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <MenuItem>
+                        <i className="fas fa-angle-double-right mx-3"></i>Add
+                        Vendors
+                      </MenuItem>
+                    </NavLink>
+                  </SubMenu>
+                ) : null}
                 {/* ------------------------------------------------------------------------- */}
                 {/* ----------------------------- Inventory ---------------------------------- */}
-                <SubMenu
-                  label="Inventory"
-                  icon={<i className="fas fa-cart-arrow-down"></i>}
-                >
-                  <NavLink
-                    to="/products/showproducts"
-                    style={{ textDecoration: "none", color: "black" }}
+                {user === "admin" ? (
+                  <SubMenu
+                    label="Inventory"
+                    icon={<i className="fas fa-cart-arrow-down"></i>}
                   >
-                    <MenuItem>
-                      <i className="fas fa-angle-double-right mx-3"></i>Show
-                      Products
-                    </MenuItem>
-                  </NavLink>
-                  <NavLink
-                    to="/products/addproducts"
-                    style={{ textDecoration: "none", color: "black" }}
-                  >
-                    <MenuItem>
-                      <i className="fas fa-angle-double-right mx-3"></i>Add
-                      Products
-                    </MenuItem>
-                  </NavLink>
-                  <NavLink
-                    to="/subproducts/addsubproducts"
-                    style={{ textDecoration: "none", color: "black" }}
-                  >
-                    <MenuItem>
-                      <i className="fas fa-angle-double-right mx-3"></i>Add
-                      Subproducts
-                    </MenuItem>
-                  </NavLink>
-                </SubMenu>
+                    <NavLink
+                      to="/products/showproducts"
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <MenuItem>
+                        <i className="fas fa-angle-double-right mx-3"></i>Show
+                        Products
+                      </MenuItem>
+                    </NavLink>
+                    <NavLink
+                      to="/products/addproducts"
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <MenuItem>
+                        <i className="fas fa-angle-double-right mx-3"></i>Add
+                        Products
+                      </MenuItem>
+                    </NavLink>
+                    <NavLink
+                      to="/subproducts/addsubproducts"
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <MenuItem>
+                        <i className="fas fa-angle-double-right mx-3"></i>Add
+                        Subproducts
+                      </MenuItem>
+                    </NavLink>
+                  </SubMenu>
+                ) : null}
                 {/* ------------------------------------------------------------------------- */}
               </Menu>
             </Sidebar>
