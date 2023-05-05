@@ -79,7 +79,7 @@ const AddContactForm = () => {
       contactDetails.contact_email === "" ||
       contactDetails.contact_status === ""
     ) {
-      Swal.fire('Enter all Details before procedding...!')
+      Swal.fire('Enter all Details before procedding!')
     } else {
       const data = {
         employee_id: loginId,

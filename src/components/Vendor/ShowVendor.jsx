@@ -15,7 +15,9 @@ import withReactContent from "sweetalert2-react-content";
 
 const ShowVendor = () => {
   const MySwal = withReactContent(Swal);
+
   const [allVendor, setAllVendor] = useState([]);
+  const [allVendorFiltered, setAllVendorFiltered] = useState([]);
 
   // const { email, loginId } = useContext(LoginContext);
   const loginId = localStorage.getItem("loginId");
@@ -40,7 +42,7 @@ const ShowVendor = () => {
 
   // -----------------------Deleting a vendor------------------------------------------------------------------
   const [deleteStatus, setdeleteStatus] = useState(false);
-  
+
   const deleteVendorDetails = async (vendorId) => {
     const data = {
       employee_id: loginId,
@@ -73,7 +75,6 @@ const ShowVendor = () => {
         }
       }
     });
-
   };
 
   useEffect(() => {
@@ -110,7 +111,11 @@ const ShowVendor = () => {
       <div className="page-wrapper">
         <div className="content container-fluid">
           <BreadCrumb title="Show Vendors" />
-          <Filter />
+          <Filter
+            setAllVendorFiltered={setAllVendorFiltered}
+            allVendor={allVendor}
+            allVendorFiltered={allVendorFiltered}
+          />
           <div className="row">
             <div className="col-sm-12">
               <div className="card card-table">
@@ -156,7 +161,7 @@ const ShowVendor = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {allVendor.map((item, i) => {
+                        {allVendorFiltered.map((item, i) => {
                           return (
                             <tr key={i}>
                               <td>{i + 1}</td>

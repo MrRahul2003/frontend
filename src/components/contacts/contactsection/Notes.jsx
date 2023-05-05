@@ -6,13 +6,18 @@ import { deleteNotes, getAllNotes } from "../../Api/ContactNotes";
 // context hooks
 import { LoginContext } from "../../context/LoginProvider";
 
+// sweet alert
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
 const Notes = ({ contactInfo }) => {
+  const MySwal = withReactContent(Swal);
+
   const [allContactNotes, setAllContactNotes] = useState([]);
 
-  const { updateStatus, setUpdateStatus } =
-    useContext(LoginContext);
-    const loginId = localStorage.getItem("loginId");
-    const email = localStorage.getItem("email");
+  const { updateStatus, setUpdateStatus } = useContext(LoginContext);
+  const loginId = localStorage.getItem("loginId");
+  const email = localStorage.getItem("email");
 
   // --------------get all contact notes related to this company----------------------------------------
   const getAllContactsNotesData = async () => {
@@ -91,12 +96,18 @@ const Notes = ({ contactInfo }) => {
                                     const response = await deleteNotes(data);
                                     console.log(response.data);
                                     if (response.status === 200) {
-                                      alert(
-                                        "Contact notes deleted successfully"
+                                      Swal.fire(
+                                        "Deleted!",
+                                        "Your Note has been deleted.",
+                                        "success"
                                       );
                                       setUpdateStatus(!updateStatus);
                                     } else {
-                                      alert("invalid credentials");
+                                      Swal.fire({
+                                        icon: "error",
+                                        title: "Oops...",
+                                        text: "Something went wrong!",
+                                      });
                                     }
                                   }}
                                 >

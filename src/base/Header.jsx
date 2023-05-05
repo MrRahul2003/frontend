@@ -12,6 +12,7 @@ const Header = () => {
 
   const email = localStorage.getItem("email");
   const username = localStorage.getItem("username");
+  const userType = localStorage.getItem("userType");
 
   const logout = () => {
     localStorage.removeItem("login");

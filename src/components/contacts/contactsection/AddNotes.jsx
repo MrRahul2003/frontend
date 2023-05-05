@@ -6,7 +6,14 @@ import { addNotes } from "../../Api/ContactNotes";
 // context hooks
 import { LoginContext } from "../../context/LoginProvider";
 
+// sweet alert
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
 const AddNotes = ({ contactInfo }) => {
+
+  const MySwal = withReactContent(Swal);
+
   const {updateStatus, setUpdateStatus } =
     useContext(LoginContext);
     const loginId = localStorage.getItem("loginId");
@@ -38,7 +45,7 @@ const AddNotes = ({ contactInfo }) => {
     const note_addingdate = new Date().toLocaleString();
 
     if (notesDetails.note_title === "" || notesDetails.note_desc === "") {
-      alert("Enter the Details before procedding");
+      Swal.fire('Enter all Details before procedding!')
     } else {
       const data = {
         employee_id: loginId,
@@ -57,11 +64,19 @@ const AddNotes = ({ contactInfo }) => {
       console.log(response);
 
       if (response.status === 200) {
-        alert("contact notes added successfully");
+        Swal.fire(
+          'Good job!',
+          'New Note added successfully!',
+          'success'
+        )
         document.getElementById("contactnotesform").reset();
         setUpdateStatus(!updateStatus);
       } else {
-        alert("invalid credentials");
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        })
       }
     }
   };

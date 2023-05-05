@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 
 // components
 import Numbers from "./components/Numbers";
+import Social from "./components/Social";
 
 // Api
 import { getPipelineEnquiry } from "../Api/Enquiry";
@@ -10,12 +11,15 @@ import { getPipelineEnquiry } from "../Api/Enquiry";
 import { getAllCompanys } from "../Api/Company";
 import { getAllContacts } from "../Api/Contact";
 import { getAllVendor } from "../Api/Vendor";
+import { Graph } from "./components/Graph";
+import Pages from "./components/Pages";
 
 const MainPipeline = () => {
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
+  const userType = localStorage.getItem("userType");
+  const username = localStorage.getItem("username");
 
-  const [AllEnquiry, setAllEnquiry] = useState([]);
   const [allCompanies, setAllCompanies] = useState([]);
   const [allContact, setAllContact] = useState([]);
   const [allVendor, setAllVendor] = useState([]);
@@ -69,12 +73,12 @@ const MainPipeline = () => {
           <div className="row">
             <div className="col-sm-12">
               <div className="page-sub-header">
-                <h3 className="page-title">Welcome {email}!</h3>
+                <h3 className="page-title">Welcome {username}!</h3>
                 <ul className="breadcrumb">
                   <li className="breadcrumb-item">
                     <a href="index.html">Home</a>
                   </li>
-                  <li className="breadcrumb-item active">Admin</li>
+                  <li className="breadcrumb-item active">{userType}</li>
                 </ul>
               </div>
             </div>
@@ -87,141 +91,18 @@ const MainPipeline = () => {
           novendors={allVendor.length}
         />
 
-        <div className="row">
-          <div className="col-xl-12 d-flex">
-            <div className="card flex-fill student-space comman-shadow">
-              <div className="card-header d-flex align-items-center">
-                <h5 className="card-title">All Enquiries</h5>
-              </div>
-              <div className="card-body">
-                <div className="table-responsive">
-                  <table className="table border-0 star-student table-hover table-center mb-0 datatable table-striped">
-                    <thead className="student-thread">
-                      <tr>
-                        <th>ID</th>
-                        <th>Enquiry Name</th>
-                        <th>Stage</th>
-                        <th>Enquiry Item</th>
-                        <th>Contact Name</th>
-                        <th>Closing Date</th>
-                        <th>Adding Date</th>
-                        <th>Description</th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Graph />
 
-        {/* ------------------------------------------------------------------------ */}
+        <Pages
+          companies={allCompanies}
+          contacts={allContact}
+          vendors={allVendor}
+        />
 
-        <div className="row">
-          <div className="col-12 col-lg-12 col-xl-8">
-            {/* <!-- aisha 4 graph ma sara companies contacts ka data ayaga --> */}
-            <div className="row">
-              <div className="col-12 col-lg-12 col-xl-12 d-flex">
-                <div className="card flex-fill comman-shadow">
-                  <div className="card-header">
-                    <div className="row align-items-center">
-                      <div className="col-6">
-                        <h5 className="card-title">Increment No</h5>
-                      </div>
-                      <div className="col-6">
-                        <ul className="chart-list-out">
-                          <li>
-                            <span className="circle-blue" />
-                            Teacher
-                          </li>
-                          <li>
-                            <span className="circle-green" />
-                            Students
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card-body">
-                    <div id="school-area" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-12 col-lg-12 col-xl-4 d-flex">
-            <div className="card flex-fill comman-shadow">
-              <div className="card-body">
-                <div className="calendar-info calendar-info1">
-                  <div className="up-come-header">
-                    <h2>Companies</h2>
-                  </div>
-
-                  {allCompanies.map((item, i) => {
-                    return (
-                      <>
-                        <div className="calendar-details">
-                          <div className="calendar-box normal-bg">
-                            <div className="calandar-event-name">
-                              <h4>{item.company_name}</h4>
-                              <h5>{item.company_email}</h5>
-                            </div>
-                          </div>
-                        </div>
-                      </>
-                    );
-                  })}
-                </div>
-                <div className="calendar-info calendar-info1">
-                  <div className="up-come-header">
-                    <h2>Contacts</h2>
-                  </div>
-
-                  {allContact.map((item, i) => {
-                    return (
-                      <>
-                        <div className="calendar-details">
-                          <div className="calendar-box normal-bg">
-                            <div className="calandar-event-name">
-                              <h4>{item.contact_name}</h4>
-                              <h5>{item.contact_email}</h5>
-                            </div>
-                            <span>{item.contact_status}</span>
-                          </div>
-                        </div>
-                      </>
-                    );
-                  })}
-                </div>
-                <div className="calendar-info calendar-info1">
-                  <div className="up-come-header">
-                    <h2>Vendors</h2>
-                  </div>
-
-                  {allVendor.map((item, i) => {
-                    return (
-                      <>
-                        <div className="calendar-details">
-                          <div className="calendar-box normal-bg">
-                            <div className="calandar-event-name">
-                              <h4>{item.vendor_name}</h4>
-                              <h5>{item.vendor_email}</h5>
-                            </div>
-                          </div>
-                        </div>
-                      </>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ------------------------------------------------------------------------ */}
+        <Social />
       </div>
+
+      {/* ------------------------------------------------------------------------ */}
     </div>
   );
 };

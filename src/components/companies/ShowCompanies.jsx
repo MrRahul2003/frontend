@@ -17,6 +17,7 @@ const ShowCompanies = () => {
   const MySwal = withReactContent(Swal);
 
   const [allCompanies, setAllCompanies] = useState([]);
+  const [allCompaniesFiltered, setAllCompaniesFiltered] = useState([]);
 
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
@@ -110,7 +111,11 @@ const ShowCompanies = () => {
       <div className="page-wrapper">
         <div className="content container-fluid">
           <BreadCrumb title="Show Companies" />
-          <Filter />
+          <Filter 
+          setAllCompanies={setAllCompanies}
+          allCompanies={allCompanies}
+          setAllCompaniesFiltered={setAllCompaniesFiltered}
+          />
           <div className="row">
             <div className="col-sm-12">
               <div className="card card-table">
@@ -154,7 +159,7 @@ const ShowCompanies = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {allCompanies.map((item, i) => {
+                        {allCompaniesFiltered.map((item, i) => {
                           return (
                             <tr key={i}>
                               <td>{i + 1}</td>

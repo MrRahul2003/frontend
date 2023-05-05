@@ -11,7 +11,9 @@ import { getPipelineEnquiry } from "../Api/Enquiry";
 const ShowEnquirySales = () => {
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
+
   const [AllEnquiry, setAllEnquiry] = useState([]);
+  const [AllEnquiryFiltered, setAllEnquiryFiltered] = useState([]);
 
   // --------------get all contact enquiry and storing them in single array-------------------------------
   const getAllEnquiryData = async () => {
@@ -35,8 +37,12 @@ const ShowEnquirySales = () => {
       <div className="page-wrapper">
         <div className="content container-fluid">
           <BreadCrumb title="Show Enquiries" />
-          <Filter />
-          {AllEnquiry.map((item, i) => {
+          <Filter
+            AllEnquiryFiltered={AllEnquiryFiltered}
+            AllEnquiry={AllEnquiry}
+            setAllEnquiryFiltered={setAllEnquiryFiltered}
+          />
+          {AllEnquiryFiltered.map((item, i) => {
             return (
               <div className="row">
                 <div className="col-sm-12">
@@ -46,10 +52,10 @@ const ShowEnquirySales = () => {
                         <div className="row align-items-center">
                           <div className="col">
                             <h3 className="page-title">
-                              Contact Id -- {item.enquiry_contact_id}
+                              {/* Contact Id -- {item.enquiry_contact_id} */}
                             </h3>
                           </div>
-                          <span>Enquiry Id -- {item._id}</span>
+                          {/* <span>Enquiry Id -- {item._id}</span> */}
                         </div>
                       </div>
                       <div className="table-responsive">

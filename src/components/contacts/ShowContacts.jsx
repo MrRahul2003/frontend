@@ -17,6 +17,7 @@ const ShowContacts = () => {
   const MySwal = withReactContent(Swal);
 
   const [allContact, setAllContact] = useState([]);
+  const [allContactsFiltered, setAllContactsFiltered] = useState([]);
 
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
@@ -109,7 +110,11 @@ const ShowContacts = () => {
       <div className="page-wrapper">
         <div className="content container-fluid">
           <BreadCrumb title="Show Contacts" />
-          <Filter />
+          <Filter
+            setAllContact={setAllContact}
+            allContact={allContact}
+            setAllContactsFiltered={setAllContactsFiltered}
+          />
           <div className="row">
             <div className="col-sm-12">
               <div className="card card-table">
@@ -158,7 +163,7 @@ const ShowContacts = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {allContact.map((item, i) => {
+                        {allContactsFiltered.map((item, i) => {
                           return (
                             <tr key={i}>
                               <td>{i + 1}</td>
