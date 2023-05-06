@@ -9,11 +9,10 @@ import { getAllProduct } from "../Api/Product";
 import { addSubProduct } from "../Api/SubProduct";
 
 // sweet alert
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const AddSubProducts = () => {
-
   const MySwal = withReactContent(Swal);
 
   const loginId = localStorage.getItem("loginId");
@@ -98,11 +97,10 @@ const AddSubProducts = () => {
       subproductDetails.subproduct_modalNo === "" ||
       subproductDetails.subproduct_partNo === "" ||
       subproductDetails.subproduct_category === "" ||
-      subproductDetails.subproduct_desc === "" ||
       subproductDetails.subproduct_price === "" ||
       subproductDetails.product_id === ""
     ) {
-      Swal.fire('Enter all Details before procedding...!')
+      Swal.fire("Enter all Details before procedding...!");
     } else {
       const data = {
         employee_id: loginId,
@@ -124,19 +122,15 @@ const AddSubProducts = () => {
       console.log(response);
 
       if (response.status === 200) {
-        Swal.fire(
-          'Good job!',
-          'New SubProduct added successfully!',
-          'success'
-        )
+        Swal.fire("Good job!", "New SubProduct added successfully!", "success");
         document.getElementById("addSubProductForm").reset();
         navigate("/products/showproducts");
       } else {
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Something went wrong!'
-        })
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
       }
     }
   };
@@ -159,7 +153,10 @@ const AddSubProducts = () => {
 
                       <div className="col-12 col-sm-6">
                         <div className="form-group local-forms">
-                          <label>SubProduct name</label>
+                          <label>
+                            SubProduct name
+                            <span className="login-danger">*</span>
+                          </label>
                           <input
                             className="form-control"
                             type="text"
@@ -171,7 +168,10 @@ const AddSubProducts = () => {
 
                       <div className="col-12 col-sm-6">
                         <div className="form-group local-forms">
-                          <label>Make</label>
+                          <label>
+                            Make
+                            <span className="login-danger">*</span>
+                          </label>
                           <input
                             className="form-control"
                             type="text"
@@ -183,7 +183,10 @@ const AddSubProducts = () => {
 
                       <div className="col-12 col-sm-6">
                         <div className="form-group local-forms">
-                          <label>Modal No.</label>
+                          <label>
+                            Modal No.
+                            <span className="login-danger">*</span>
+                          </label>
                           <input
                             className="form-control"
                             type="text"
@@ -195,7 +198,10 @@ const AddSubProducts = () => {
 
                       <div className="col-12 col-sm-6">
                         <div className="form-group local-forms">
-                          <label>Part No.</label>
+                          <label>
+                            Part No.
+                            <span className="login-danger">*</span>
+                          </label>
                           <input
                             className="form-control"
                             type="text"
@@ -250,7 +256,10 @@ const AddSubProducts = () => {
 
                       <div className="col-12 col-sm-6">
                         <div className="form-group local-forms">
-                          <label>Price(₹)</label>
+                          <label>
+                            Price(₹)
+                            <span className="login-danger">*</span>
+                          </label>
                           <input
                             className="form-control"
                             type="number"

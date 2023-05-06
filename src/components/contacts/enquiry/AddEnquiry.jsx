@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Form from "react-bootstrap/Form";
+
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -201,16 +203,16 @@ const AddEnquiry = () => {
                       </div>
 
                       <div className="col-12 col-sm-4">
-                        <div className="form-group local-forms calendar-icon">
+                        <div className="form-group local-forms">
                           <label>
                             Closing Date <span className="login-danger">*</span>
                           </label>
-                          <input
-                            className="form-control datetimepicker"
-                            type="text"
-                            placeholder="DD-MM-YYYY"
-                            onChange={insertFields}
+                          <Form.Control
+                            type="date"
                             name="enquiry_closingDate"
+                            placeholder="DateRange"
+                            // value={date}
+                            onChange={insertFields}
                           />
                         </div>
                       </div>

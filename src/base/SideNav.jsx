@@ -5,7 +5,6 @@ import { NavLink } from "react-router-dom";
 
 const SideNav = () => {
   var user = localStorage.getItem("userType");
-  var login = localStorage.getItem("login");
 
   return (
     <>

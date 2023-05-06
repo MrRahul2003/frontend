@@ -1,5 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import Form from "react-bootstrap/Form";
 
 // components
 import AllItemList from "./AllItemList";
@@ -14,7 +15,6 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 const EditEnquiry = () => {
-
   const MySwal = withReactContent(Swal);
 
   // ---------------------getting contact and enquiry info from navlink--------------------------------
@@ -104,7 +104,7 @@ const EditEnquiry = () => {
       itemInfo.item_modalNo !== "" ||
       itemInfo.item_partNo !== ""
     ) {
-      Swal.fire('Enter all Details or add item to list before procedding!')
+      Swal.fire("Enter all Details or add item to list before procedding!");
     } else {
       const data = {
         employee_id: loginId,
@@ -130,10 +130,10 @@ const EditEnquiry = () => {
         navigate("/contacts/showcontacts");
       } else {
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Something went wrong!'
-        })
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
       }
     }
   };
@@ -206,17 +206,16 @@ const EditEnquiry = () => {
                       </div>
 
                       <div className="col-12 col-sm-4">
-                        <div className="form-group local-forms calendar-icon">
+                        <div className="form-group local-forms">
                           <label>
                             Closing Date <span className="login-danger">*</span>
                           </label>
-                          <input
-                            className="form-control datetimepicker"
-                            type="text"
-                            placeholder="DD-MM-YYYY"
-                            onChange={insertFields}
-                            value={enquiryInfo.enquiry_closingDate}
+                          <Form.Control
+                            type="date"
                             name="enquiry_closingDate"
+                            placeholder="DateRange"
+                            value={enquiryInfo.enquiry_closingDate}
+                            onChange={insertFields}
                           />
                         </div>
                       </div>

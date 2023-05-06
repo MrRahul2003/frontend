@@ -8,12 +8,12 @@ import FormHeading from "../components/FormHeading";
 import { editVendor, getVendor } from "../../Api/Vendor";
 
 // sweet alert
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const EditVendorForm = ({ vendorInfo }) => {
   const MySwal = withReactContent(Swal);
-  
+
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
   const navigate = useNavigate();
@@ -97,7 +97,10 @@ const EditVendorForm = ({ vendorInfo }) => {
 
         <div className="col-12 col-sm-4">
           <div className="form-group local-forms">
-            <label>E-Mail</label>
+            <label>
+              E-Mail
+              <span className="login-danger">*</span>
+            </label>
             <input
               className="form-control"
               type="text"

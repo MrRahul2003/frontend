@@ -3,7 +3,6 @@ import { NavLink, useLocation } from "react-router-dom";
 import { CSVLink } from "react-csv";
 
 import BreadCrumb from "../components/BreadCrumb";
-import Filter from "../showcontacts/Filter";
 
 // Api
 import { deleteEnquiry, getAllEnquiry } from "../../Api/Enquiry";
@@ -114,7 +113,6 @@ const ShowEnquiry = () => {
       <div className="page-wrapper">
         <div className="content container-fluid">
           <BreadCrumb title="Show Enquiries" />
-          <Filter />
           <div className="row">
             <div className="col-sm-12">
               <div className="card card-table">

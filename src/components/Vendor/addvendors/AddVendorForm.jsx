@@ -124,7 +124,7 @@ const AddVendorForm = () => {
 
           <div className="col-12 col-sm-4">
             <div className="form-group local-forms">
-              <label>E-Mail</label>
+              <label>E-Mail<span className="login-danger">*</span></label>
               <input
                 className="form-control"
                 type="text"
@@ -150,7 +150,6 @@ const AddVendorForm = () => {
             <div className="form-group local-forms">
               <label>
                 Other Phone No
-                <span className="login-danger">*</span>
               </label>
               <input
                 className="form-control"

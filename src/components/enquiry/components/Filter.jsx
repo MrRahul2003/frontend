@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Form from "react-bootstrap/Form";
 
 const Filter = ({ AllEnquiryFiltered, AllEnquiry, setAllEnquiryFiltered }) => {
   const [search, setSearch] = useState({
@@ -20,7 +21,6 @@ const Filter = ({ AllEnquiryFiltered, AllEnquiry, setAllEnquiryFiltered }) => {
   };
 
   const filteringFunction = async () => {
-
     var filteredData = await AllEnquiry.filter(async (item) => {
       console.log(item);
       item.enquriy.enquiry_name
@@ -31,7 +31,6 @@ const Filter = ({ AllEnquiryFiltered, AllEnquiry, setAllEnquiryFiltered }) => {
     });
     // setAllEnquiryFiltered(filteredData);
     console.log("filtered enquiry", filteredData);
-
   };
 
   useEffect(() => {
@@ -79,12 +78,12 @@ const Filter = ({ AllEnquiryFiltered, AllEnquiry, setAllEnquiryFiltered }) => {
           </div>
           <div className="col-lg-3 col-md-6">
             <div className="form-group">
-              <input
-                className="form-control datetimepicker"
-                type="text"
-                placeholder="DD-MM-YYYY"
-                onChange={insertFields}
+              <Form.Control
+                type="date"
                 name="enquiry_closingDate"
+                placeholder="DateRange"
+                // value={date}
+                onChange={insertFields}
               />
             </div>
           </div>
