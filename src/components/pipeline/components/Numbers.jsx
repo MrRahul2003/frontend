@@ -1,0 +1,79 @@
+import React from "react";
+
+const Numbers = ({ nocompanies, nocontacts, novendors }) => {
+  return (
+    <div className="row">
+      <div className="col-xl-3 col-sm-6 col-12 d-flex">
+        <div className="card bg-comman w-100">
+          <div className="card-body">
+            <div className="db-widgets d-flex justify-content-between align-items-center">
+              <div className="db-info">
+                <h6>Companies</h6>
+                <h3>{nocompanies}</h3>
+              </div>
+              <div className="db-icon">
+                <img
+                  src="/assets/img/pipeline/company.png"
+                  alt="Companies Icon"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="col-xl-3 col-sm-6 col-12 d-flex">
+        <div className="card bg-comman w-100">
+          <div className="card-body">
+            <div className="db-widgets d-flex justify-content-between align-items-center">
+              <div className="db-info">
+                <h6>Contacts</h6>
+                <h3>{nocontacts}</h3>
+              </div>
+              <div className="db-icon">
+                <img
+                  src="/assets/img/pipeline/contact.png"
+                  alt="Contact Icon"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="col-xl-3 col-sm-6 col-12 d-flex">
+        <div className="card bg-comman w-100">
+          <div className="card-body">
+            <div className="db-widgets d-flex justify-content-between align-items-center">
+              <div className="db-info">
+                <h6>Vendors</h6>
+                <h3>{novendors}</h3>
+              </div>
+              <div className="db-icon">
+                <img src="/assets/img/pipeline/vendor.png" alt="Vendor Icon" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="col-xl-3 col-sm-6 col-12 d-flex">
+        <div className="card bg-comman w-100">
+          <div className="card-body">
+            <div className="db-widgets d-flex justify-content-between align-items-center">
+              <div className="db-info">
+                <h6>Revenue</h6>
+                <h3>$505</h3>
+              </div>
+              <div className="db-icon">
+                <img
+                  src="assets/img/icons/dash-icon-04.svg"
+                  alt="Dashboard Icon"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Numbers;
