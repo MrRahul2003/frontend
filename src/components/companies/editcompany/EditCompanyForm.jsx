@@ -14,6 +14,8 @@ import withReactContent from "sweetalert2-react-content";
 const EditCompanyForm = ({ companyInfo }) => {
   const MySwal = withReactContent(Swal);
 
+  const [loading, setLoading] = useState(false);
+
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
   const navigate = useNavigate();
@@ -63,7 +65,9 @@ const EditCompanyForm = ({ companyInfo }) => {
     ) {
       Swal.fire("Enter all Details before procedding...!");
     } else {
+      setLoading(true);
       const response = await editCompany(companyDetails);
+      setLoading(false);
       console.log(response);
 
       if (response.status === 200) {
@@ -231,8 +235,9 @@ const EditCompanyForm = ({ companyInfo }) => {
               type="submit"
               className="btn btn-primary"
               onClick={submitForm}
+              disabled={loading}
             >
-              Submit
+              {loading ? <>Updating..</> : <>Update</>}
             </button>
           </div>
         </div>

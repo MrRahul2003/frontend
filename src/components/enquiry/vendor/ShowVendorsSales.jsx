@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useLocation,useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 // components
 import ItemTable from "./ItemTable";
@@ -9,12 +9,14 @@ import { getAllVendor } from "../../Api/Vendor";
 import { genEnquiry, sendEnquiry } from "../../Api/Enquiry";
 
 // sweet alert
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const ShowVendorsSales = () => {
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
 
   // ---------------------getting enquiry info from navlink--------------------------------
   let location = useLocation();
@@ -57,7 +59,9 @@ const ShowVendorsSales = () => {
 
   const sendMailToVendor = async () => {
     const data = { receiver: isChecked, enquiryInfo: enquiryInfo };
+    setLoading(true);
     const response = await genEnquiry(data);
+    setLoading(false);
     console.log(response);
 
     if (response.status === 200) {
@@ -71,7 +75,9 @@ const ShowVendorsSales = () => {
         confirmButtonText: "Yes, Send it!",
       }).then(async (result) => {
         if (result.isConfirmed) {
+          setLoading(true);
           const res = await sendEnquiry(data);
+          setLoading(false);
           console.log(res.data);
 
           if (res.status === 200) {
@@ -93,7 +99,6 @@ const ShowVendorsSales = () => {
         text: "Something went wrong!",
       });
     }
-    
   };
 
   // ------------------------csv data--------------------------------------------------------------
@@ -190,8 +195,9 @@ const ShowVendorsSales = () => {
                       className="btn btn-primary my-4"
                       type="button"
                       onClick={sendMailToVendor}
+                      disabled={loading}
                     >
-                      Send Mail
+                      {loading ? <>Sending..</> : <>Send Mail</>}
                     </button>
                   </tbody>
                 </table>

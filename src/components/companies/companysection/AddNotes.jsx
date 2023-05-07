@@ -7,12 +7,13 @@ import { addNotes } from "../../Api/CompanyNotes";
 import { LoginContext } from "../../context/LoginProvider";
 
 // sweet alert
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const AddNotes = ({ companyInfo }) => {
-
   const MySwal = withReactContent(Swal);
+
+  const [loading, setLoading] = useState(false);
 
   const { updateStatus, setUpdateStatus } = useContext(LoginContext);
 
@@ -60,7 +61,9 @@ const AddNotes = ({ companyInfo }) => {
         note_addingdate: note_addingdate,
       };
 
+      setLoading(true);
       const response = await addNotes(data);
+      setLoading(false);
       console.log(response);
 
       if (response.status === 200) {
@@ -114,8 +117,9 @@ const AddNotes = ({ companyInfo }) => {
                   className="btn btn-primary"
                   type="submit"
                   onClick={submitForm}
+                  disabled={loading}
                 >
-                  Add Note
+                  {loading ? <>Loading..</> : <> Add Note</>}
                 </button>
               </form>
             </div>

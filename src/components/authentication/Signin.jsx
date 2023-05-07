@@ -10,6 +10,9 @@ import withReactContent from "sweetalert2-react-content";
 
 const Signin = () => {
   const MySwal = withReactContent(Swal);
+
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const [userType, setUserType] = useState("");
@@ -57,7 +60,9 @@ const Signin = () => {
       if (username === "" || email === "" || password === "") {
         Swal.fire("Enter all Details before procedding!");
       } else {
+        setLoading(true);
         const response = await addSignin(data);
+        setLoading(false);
         console.log("sending Signin Data", response.data);
 
         if (response.status === 200) {
@@ -70,10 +75,10 @@ const Signin = () => {
           navigate("/authentication/login");
         } else {
           Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Something went wrong!'
-          })
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong!",
+          });
         }
       }
     }
@@ -193,8 +198,9 @@ const Signin = () => {
                       type="submit"
                       placeholder="Secret Key"
                       onClick={submitForm}
+                      disabled={loading}
                     >
-                      Signin
+                      {loading ? <>Loading..</> : <>Sign up</>}
                     </button>
                   </div>
                 </form>

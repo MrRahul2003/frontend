@@ -14,6 +14,8 @@ const AddNotes = ({ contactInfo }) => {
 
   const MySwal = withReactContent(Swal);
 
+  const [loading, setLoading] = useState(false);
+
   const {updateStatus, setUpdateStatus } =
     useContext(LoginContext);
     const loginId = localStorage.getItem("loginId");
@@ -59,8 +61,9 @@ const AddNotes = ({ contactInfo }) => {
 
         note_addingdate: note_addingdate,
       };
-
+      setLoading(true);
       const response = await addNotes(data);
+      setLoading(false);
       console.log(response);
 
       if (response.status === 200) {
@@ -118,8 +121,9 @@ const AddNotes = ({ contactInfo }) => {
                   className="btn btn-primary"
                   type="submit"
                   onClick={submitForm}
+                  disabled={loading}
                 >
-                  Add Note
+                  {loading ? <>Adding..</> : <>Add Note</>}
                 </button>
               </form>
             </div>

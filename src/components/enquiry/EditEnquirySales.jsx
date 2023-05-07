@@ -13,8 +13,9 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 const EditEnquirySales = () => {
-
   const MySwal = withReactContent(Swal);
+
+  const [loading, setLoading] = useState(false);
 
   // ---------------------getting enquiry section info from navlink--------------------------------
   let location = useLocation();
@@ -53,7 +54,7 @@ const EditEnquirySales = () => {
     e.preventDefault();
 
     if (enquiryInfo.enquiry_stage === "") {
-      Swal.fire('Enter all Details before procedding...!')
+      Swal.fire("Enter all Details before procedding...!");
     } else {
       const data = {
         employee_id: EnquiryInfo.employee_id,
@@ -69,7 +70,9 @@ const EditEnquirySales = () => {
         enquiry_stage: enquiryInfo.enquiry_stage,
       };
 
+      setLoading(true);
       const response = await editEnquiry(data);
+      setLoading(false);
       console.log(response);
 
       if (response.status === 200) {
@@ -131,8 +134,9 @@ const EditEnquirySales = () => {
                           type="submit"
                           className="btn btn-primary"
                           onClick={submitForm}
+                          disabled={loading}
                         >
-                          Submit
+                          {loading ? <>Updating..</> : <>Update</>}
                         </button>
                       </div>
                     </div>

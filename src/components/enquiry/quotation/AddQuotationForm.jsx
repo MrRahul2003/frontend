@@ -13,12 +13,13 @@ import { getAllVendor } from "../../Api/Vendor";
 import { LoginContext } from "../../context/LoginProvider";
 
 // sweet alert
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const AddQuotationForm = ({ enquiryInfo }) => {
-
   const MySwal = withReactContent(Swal);
+
+  const [loading, setLoading] = useState(false);
 
   const { updateStatus, setUpdateStatus } = useContext(LoginContext);
   const loginId = localStorage.getItem("loginId");
@@ -102,7 +103,7 @@ const AddQuotationForm = ({ enquiryInfo }) => {
       itemInfo.item_quantity !== "" ||
       itemInfo.item_total_price !== ""
     ) {
-      Swal.fire('Enter all Details before procedding...!')
+      Swal.fire("Enter all Details before procedding...!");
     } else {
       const data = {
         employee_id: loginId,
@@ -116,15 +117,13 @@ const AddQuotationForm = ({ enquiryInfo }) => {
         itemList: ItemList,
       };
 
+      setLoading(true);
       const response = await addQuotation(data);
+      setLoading(false);
       console.log(response);
 
       if (response.status === 200) {
-        Swal.fire(
-          'Good job!',
-          'New Quotation added successfully!',
-          'success'
-        )
+        Swal.fire("Good job!", "New Quotation added successfully!", "success");
 
         document.getElementById("addquotaionform").reset();
         setUpdateStatus(!updateStatus);
@@ -132,10 +131,10 @@ const AddQuotationForm = ({ enquiryInfo }) => {
         navigate("/enquirysales/showenquiry");
       } else {
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Something went wrong!'
-        })
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
       }
     }
   };
@@ -322,8 +321,9 @@ const AddQuotationForm = ({ enquiryInfo }) => {
               type="submit"
               className="btn btn-primary"
               onClick={submitForm}
+              disabled={loading}
             >
-              Submit
+              {loading ? <>Adding..</> : <>Add</>}
             </button>
           </div>
         </div>

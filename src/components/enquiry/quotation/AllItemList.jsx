@@ -23,17 +23,6 @@ const AllItemList = (props) => {
                   <div className="col">
                     <h3 className="page-title">Items</h3>
                   </div>
-                  <div className="col-auto text-end float-end ms-auto download-grp">
-                    <a href="#" className="btn btn-outline-primary me-2">
-                      <i className="fas fa-download" /> Download
-                    </a>
-                    <NavLink
-                      to="/contacts/addcontacts"
-                      className="btn btn-primary"
-                    >
-                      <i className="fas fa-plus" />
-                    </NavLink>
-                  </div>
                 </div>
               </div>
               <div className="table-responsive">

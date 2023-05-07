@@ -8,13 +8,14 @@ import FormHeading from "../components/FormHeading";
 import { addVendor } from "../../Api/Vendor";
 
 // sweet alert
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const AddVendorForm = () => {
-
   const MySwal = withReactContent(Swal);
-  
+
+  const [loading, setLoading] = useState(false);
+
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ const AddVendorForm = () => {
     const vendor_addingdate = new Date().toLocaleString();
 
     if (vendorDetails.vendor_name === "" || vendorDetails.vendor_email === "") {
-      Swal.fire('Enter all Details before procedding...!')
+      Swal.fire("Enter all Details before procedding...!");
     } else {
       const data = {
         employee_id: loginId,
@@ -78,24 +79,22 @@ const AddVendorForm = () => {
         vendor_addingdate: vendor_addingdate,
       };
 
+      setLoading(true);
       const response = await addVendor(data);
+      setLoading(false);
       console.log(response);
 
       if (response.status === 200) {
-        Swal.fire(
-          'Good job!',
-          'New Vendor added successfully!',
-          'success'
-        )
+        Swal.fire("Good job!", "New Vendor added successfully!", "success");
 
         document.getElementById("addvendorform").reset();
         navigate("/vendors/showvendors");
       } else {
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Something went wrong!'
-        })
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
       }
     }
   };
@@ -124,7 +123,9 @@ const AddVendorForm = () => {
 
           <div className="col-12 col-sm-4">
             <div className="form-group local-forms">
-              <label>E-Mail<span className="login-danger">*</span></label>
+              <label>
+                E-Mail<span className="login-danger">*</span>
+              </label>
               <input
                 className="form-control"
                 type="text"
@@ -148,9 +149,7 @@ const AddVendorForm = () => {
 
           <div className="col-12 col-sm-4">
             <div className="form-group local-forms">
-              <label>
-                Other Phone No
-              </label>
+              <label>Other Phone No</label>
               <input
                 className="form-control"
                 type="number"
@@ -267,8 +266,9 @@ const AddVendorForm = () => {
               type="submit"
               className="btn btn-primary"
               onClick={submitForm}
+              disabled={loading}
             >
-              Submit
+              {loading ? <>Adding..</> : <>Add</>}
             </button>
           </div>
         </div>

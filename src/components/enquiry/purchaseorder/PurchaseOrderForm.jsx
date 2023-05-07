@@ -14,8 +14,9 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 const PurchaseOrderForm = ({ quotationInfo, enquiryInfo }) => {
-
   const MySwal = withReactContent(Swal);
+
+  const [loading, setLoading] = useState(false);
 
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
@@ -56,7 +57,9 @@ const PurchaseOrderForm = ({ quotationInfo, enquiryInfo }) => {
       itemList: ItemList,
     };
 
+    setLoading(true);
     const response = await genPurchaseOrder(data);
+    setLoading(false);
     console.log(response);
 
     if (response.status === 200) {
@@ -70,7 +73,9 @@ const PurchaseOrderForm = ({ quotationInfo, enquiryInfo }) => {
         confirmButtonText: "Yes, Send it!",
       }).then(async (result) => {
         if (result.isConfirmed) {
+          setLoading(true);
           const res = await sendPurchaseOrder(data);
+          setLoading(false);
           console.log(res.data);
 
           if (res.status === 200) {
@@ -123,8 +128,9 @@ const PurchaseOrderForm = ({ quotationInfo, enquiryInfo }) => {
                 className="btn bank-cancel-btn me-2"
                 type="button"
                 onClick={submitForm}
+                disabled={loading}
               >
-                Send To Vendor
+                {loading ? <>Sending..</> : <>Send To Vendor</>}
               </button>
             </div>
           </div>

@@ -16,6 +16,8 @@ import withReactContent from "sweetalert2-react-content";
 const ShowContacts = () => {
   const MySwal = withReactContent(Swal);
 
+  const [loading, setLoading] = useState(false);
+
   const [allContact, setAllContact] = useState([]);
   const [allContactsFiltered, setAllContactsFiltered] = useState([]);
 
@@ -59,7 +61,9 @@ const ShowContacts = () => {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
+        setLoading(true);
         const response = await deleteContact(data);
+        setLoading(false);
         console.log(response.data);
 
         if (response.status === 200) {
@@ -214,6 +218,7 @@ const ShowContacts = () => {
                                     e.preventDefault();
                                     deleteContactDetails(item._id);
                                   }}
+                                  disabled={loading}
                                 >
                                   <i className="fa fa-trash" />
                                 </a>

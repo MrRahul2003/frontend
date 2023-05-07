@@ -12,6 +12,8 @@ const Login = () => {
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(false);
+
   const [Login, setLogin] = useState({
     email: "",
     password: "",
@@ -41,17 +43,19 @@ const Login = () => {
 
     const { email, password } = Login;
 
-    const data = {
-      email: email,
-      password: password,
-    };
-
-    const response = await addLogin(data);
-    console.log("sending Login Data", response.data);
-
     if (email === "" || password === "") {
       Swal.fire("Enter all Details before procedding!");
     } else {
+      const data = {
+        email: email,
+        password: password,
+      };
+
+      setLoading(true);
+      const response = await addLogin(data);
+      setLoading(false);
+      console.log("sending Login Data", response.data);
+
       if (response.status === 200) {
         await Swal.fire(
           "Good job!",
@@ -70,6 +74,7 @@ const Login = () => {
 
         navigate("/pipeline");
       } else {
+        setLoading(false);
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -126,8 +131,9 @@ const Login = () => {
                       className="btn btn-primary btn-block"
                       type="submit"
                       onClick={submitForm}
+                      disabled={loading}
                     >
-                      Login
+                      {loading ? <>Loading..</> : <>Log in</>}
                     </button>
                   </div>
                 </form>

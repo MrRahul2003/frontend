@@ -12,6 +12,8 @@ import withReactContent from "sweetalert2-react-content";
 const AllItemList = (props) => {
   const MySwal = withReactContent(Swal);
 
+  const [loading, setLoading] = useState(false);
+
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
   const navigate = useNavigate();
@@ -52,7 +54,9 @@ const AllItemList = (props) => {
       itemList: AllItemsData,
     };
 
+    setLoading(true);
     const response = await genProduct(data);
+    setLoading(false);
     console.log(response);
 
     if (response.status === 200) {
@@ -66,7 +70,9 @@ const AllItemList = (props) => {
         confirmButtonText: "Yes, Send it!",
       }).then(async (result) => {
         if (result.isConfirmed) {
+          setLoading(true);
           const res = await sendProduct(data);
+          setLoading(false);
           console.log(res.data);
 
           if (res.status === 200) {
@@ -213,8 +219,9 @@ const AllItemList = (props) => {
                     className="btn btn-primary mt-4"
                     type="button"
                     onClick={submitForm}
+                    disabled={loading}
                   >
-                    Send To Customer
+                    {loading ? <>Sending..</> : <> Send To Customer</>}
                   </button>
                 </form>
               </div>

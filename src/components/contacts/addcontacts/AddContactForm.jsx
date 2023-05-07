@@ -14,6 +14,8 @@ import withReactContent from 'sweetalert2-react-content'
 
 const AddContactForm = () => {
   const MySwal = withReactContent(Swal);
+  
+  const [loading, setLoading] = useState(false);
 
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
@@ -102,8 +104,9 @@ const AddContactForm = () => {
 
         contact_status: contactDetails.contact_status,
       };
-
+      setLoading(true);
       const response = await addContact(data);
+      setLoading(false);
       console.log(response);
 
       if (response.status === 200) {
@@ -325,8 +328,9 @@ const AddContactForm = () => {
               type="submit"
               className="btn btn-primary"
               onClick={submitForm}
+              disabled={loading}
             >
-              Submit
+              {loading ? <>Adding..</> : <>Add</>}
             </button>
           </div>
         </div>

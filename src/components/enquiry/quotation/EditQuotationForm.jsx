@@ -11,12 +11,13 @@ import { editQuotation } from "../../Api/Quotation";
 import { LoginContext } from "../../context/LoginProvider";
 
 // sweet alert
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
-const EditQuotationForm = ({quotationInfo, enquiryInfo}) => {
-
+const EditQuotationForm = ({ quotationInfo, enquiryInfo }) => {
   const MySwal = withReactContent(Swal);
+
+  const [loading, setLoading] = useState(false);
 
   const { updateStatus, setUpdateStatus } = useContext(LoginContext);
   const loginId = localStorage.getItem("loginId");
@@ -27,7 +28,7 @@ const EditQuotationForm = ({quotationInfo, enquiryInfo}) => {
   const [ItemList, setItemList] = useState([]); // storing all items here
 
   useEffect(() => {
-    setItemList(quotationInfo.itemList)
+    setItemList(quotationInfo.itemList);
   }, []);
 
   // storing a single item while onchange is running
@@ -83,7 +84,7 @@ const EditQuotationForm = ({quotationInfo, enquiryInfo}) => {
       itemInfo.item_quantity !== "" ||
       itemInfo.item_total_price !== ""
     ) {
-      Swal.fire('Enter all Details before procedding...!')
+      Swal.fire("Enter all Details before procedding...!");
     } else {
       const data = {
         employee_id: loginId,
@@ -96,7 +97,9 @@ const EditQuotationForm = ({quotationInfo, enquiryInfo}) => {
         itemList: ItemList,
       };
 
+      setLoading(true);
       const response = await editQuotation(data);
+      setLoading(false);
       console.log(response);
 
       if (response.status === 200) {
@@ -264,8 +267,9 @@ const EditQuotationForm = ({quotationInfo, enquiryInfo}) => {
               type="submit"
               className="btn btn-primary"
               onClick={submitForm}
+              disabled={loading}
             >
-              Submit
+              {loading ? <>Updating..</> : <>Update</>}
             </button>
           </div>
         </div>

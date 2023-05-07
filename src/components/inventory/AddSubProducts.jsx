@@ -15,6 +15,8 @@ import withReactContent from "sweetalert2-react-content";
 const AddSubProducts = () => {
   const MySwal = withReactContent(Swal);
 
+  const [loading, setLoading] = useState(false);
+
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
   const navigate = useNavigate();
@@ -118,7 +120,9 @@ const AddSubProducts = () => {
         subproduct_addingdate: subproduct_addingdate,
       };
 
+      setLoading(true);
       const response = await addSubProduct(data);
+      setLoading(false);
       console.log(response);
 
       if (response.status === 200) {
@@ -287,8 +291,9 @@ const AddSubProducts = () => {
                             type="submit"
                             className="btn btn-primary"
                             onClick={submitForm}
+                            disabled={loading}
                           >
-                            Add Subproduct
+                            {loading ? <>Adding..</> : <>Add Subproduct</>}
                           </button>
                         </div>
                       </div>

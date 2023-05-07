@@ -6,14 +6,15 @@ import FormHeading from "../components/FormHeading";
 
 // Api
 import { addCompany } from "../../Api/Company";
- 
+
 // sweet alert
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const AddCompanyForm = () => {
-  
   const MySwal = withReactContent(Swal);
+
+  const [loading, setLoading] = useState(false);
 
   const loginId = localStorage.getItem("loginId");
   const email = localStorage.getItem("email");
@@ -57,7 +58,7 @@ const AddCompanyForm = () => {
       companyDetails.company_email === "" ||
       companyDetails.company_phone === ""
     ) {
-      Swal.fire('Enter all Details before procedding...!')
+      Swal.fire("Enter all Details before procedding...!");
     } else {
       const data = {
         employee_id: loginId,
@@ -76,25 +77,22 @@ const AddCompanyForm = () => {
         company_code: companyDetails.company_code,
         company_addingdate: company_addingdate,
       };
-
+      setLoading(true);
       const response = await addCompany(data);
+      setLoading(false);
       console.log("adding company data getting", response);
 
       if (response.status === 200) {
-        Swal.fire(
-          'Good job!',
-          'New Company added successfully!',
-          'success'
-        )
-        
+        Swal.fire("Good job!", "New Company added successfully!", "success");
+
         document.getElementById("addcompanyform").reset();
         navigate("/company/showcompanies");
       } else {
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Something went wrong!'
-        })
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
       }
     }
   };
@@ -239,8 +237,9 @@ const AddCompanyForm = () => {
               type="submit"
               className="btn btn-primary"
               onClick={submitForm}
+              disabled={loading}
             >
-              Submit
+              {loading ? <>Adding..</> : <>Add</>}
             </button>
           </div>
         </div>
