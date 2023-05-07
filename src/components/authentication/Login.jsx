@@ -97,7 +97,7 @@ const Login = () => {
                     </label>
                     <input
                       className="form-control"
-                      type="text"
+                      type="email"
                       onChange={insertFields}
                       autoComplete="false"
                       name="email"
@@ -113,7 +113,7 @@ const Login = () => {
                     </label>
                     <input
                       className="form-control pass-input"
-                      type="text"
+                      type="password"
                       onChange={insertFields}
                       autoComplete="false"
                       name="password"

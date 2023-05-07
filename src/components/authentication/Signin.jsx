@@ -148,7 +148,7 @@ const Signin = () => {
                     </label>
                     <input
                       className="form-control"
-                      type="text"
+                      type="email"
                       onChange={insertFields}
                       autoComplete="false"
                       name="email"
@@ -164,7 +164,7 @@ const Signin = () => {
                     </label>
                     <input
                       className="form-control pass-input"
-                      type="text"
+                      type="password"
                       onChange={insertFields}
                       autoComplete="false"
                       name="password"
@@ -179,7 +179,7 @@ const Signin = () => {
                       </label>
                       <input
                         className="form-control pass-input"
-                        type="text"
+                        type="password"
                         onChange={(e) => setSecretKey(e.target.value)}
                         autoComplete="false"
                         name="secretkey"

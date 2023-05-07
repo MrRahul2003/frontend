@@ -15,13 +15,14 @@ const Header = () => {
   const userType = localStorage.getItem("userType");
   let login = localStorage.getItem("login");
 
-  const logout = async() => {
+  const logout = async () => {
     localStorage.removeItem("login");
     localStorage.removeItem("loginId");
     localStorage.removeItem("email");
     localStorage.removeItem("username");
     localStorage.removeItem("userType");
     await Swal.fire("Good job!", `Logged out successfully!`, "success");
+    window.location.reload(false);
   };
   return (
     <>
@@ -68,9 +69,11 @@ const Header = () => {
                   <p className="text-muted mb-0">{email}</p>
                 </div>
               </div>
-              <a className="dropdown-item" href="" onClick={logout}>
-                Logout
-              </a>
+              {login === "true" ? (
+                <a className="dropdown-item" href="" onClick={logout}>
+                  Logout
+                </a>
+              ) : null}
             </div>
           </li>
         </ul>
