@@ -4,17 +4,17 @@ import { useNavigate } from "react-router-dom";
 // components
 import FormHeading from "../components/FormHeading";
 
-// Api 
+// Api
 import { addContact } from "../../Api/Contact";
 import { getAllCompanys } from "../../Api/Company";
 
 // sweet alert
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const AddContactForm = () => {
   const MySwal = withReactContent(Swal);
-  
+
   const [loading, setLoading] = useState(false);
 
   const loginId = localStorage.getItem("loginId");
@@ -81,7 +81,7 @@ const AddContactForm = () => {
       contactDetails.contact_email === "" ||
       contactDetails.contact_status === ""
     ) {
-      Swal.fire('Enter all Details before procedding!')
+      Swal.fire("Enter all Details before procedding!");
     } else {
       const data = {
         employee_id: loginId,
@@ -104,26 +104,23 @@ const AddContactForm = () => {
 
         contact_status: contactDetails.contact_status,
       };
+
       setLoading(true);
       const response = await addContact(data);
       setLoading(false);
       console.log(response);
 
       if (response.status === 200) {
-        Swal.fire(
-          'Good job!',
-          'New Contact added successfully!',
-          'success'
-        )
+        Swal.fire("Good job!", "New Contact added successfully!", "success");
 
         document.getElementById("addcontactform").reset();
         navigate("/contacts/showcontacts");
       } else {
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Something went wrong!'
-        })
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
       }
     }
   };
@@ -314,7 +311,9 @@ const AddContactForm = () => {
                 onChange={insertFields}
                 name="contact_status"
               >
-                <option value="" className="active">Select Status</option>
+                <option value="" className="active">
+                  Select Status
+                </option>
                 <option value="accepted">Accepted</option>
                 <option value="rejected">Rejected</option>
               </select>

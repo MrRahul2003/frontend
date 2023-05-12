@@ -16,7 +16,7 @@ const ProductOrder = () => {
     <>
       <div className="page-wrapper">
         <div className="content container-fluid">
-          <BreadCrumb title="Product Order" />
+          <BreadCrumb title="Customer Quotation" />
           <div className="row">
             <div className="col-sm-12">
               <div className="card comman-shadow">

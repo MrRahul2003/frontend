@@ -65,9 +65,9 @@ const ShowEnquiryItemSales = () => {
                     <thead className="student-thread">
                       <tr>
                         <th>ID</th>
-                        <th>Name</th>
                         <th>Make</th> 
                         <th>Modal No</th>
+                        <th>Part Name</th>
                         <th>Part No</th>
                       </tr>
                     </thead>
@@ -76,9 +76,9 @@ const ShowEnquiryItemSales = () => {
                         return (
                           <tr key={i}>
                             <td>{i + 1}</td>
-                            <td>{item.item_name}</td>
                             <td>{item.item_make}</td>
                             <td>{item.item_modalNo}</td>
+                            <td>{item.item_name}</td>
                             <td>{item.item_partNo}</td>
                           </tr>
                         );

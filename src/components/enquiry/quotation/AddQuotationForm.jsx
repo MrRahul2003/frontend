@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 // components
@@ -47,6 +46,7 @@ const AddQuotationForm = ({ enquiryInfo }) => {
   // ---------------------------storing items in quotation data when user add it on form----------------------------------
   const [ItemList, setItemList] = useState([]); // storing all items here
   const [vendorInfo, setVendorInfo] = useState("");
+  const [GstTypeInfo, setGstTypeInfo] = useState("");
 
   // storing a single item while onchange is running
   const [itemInfo, setItemInfo] = useState({
@@ -56,6 +56,9 @@ const AddQuotationForm = ({ enquiryInfo }) => {
     item_partNo: "",
     item_price: "",
     item_quantity: "",
+    item_IGST: 0,
+    item_CGST: 0,
+    item_SGST: 0,
     item_total_price: "",
   });
 
@@ -71,21 +74,48 @@ const AddQuotationForm = ({ enquiryInfo }) => {
       };
     });
   };
+
+  useEffect(() => {
+    setItemInfo((preVal) => {
+      return {
+        ...preVal,
+        item_IGST: 0,
+        item_CGST: 0,
+        item_SGST: 0,
+      };
+    });
+  }, [GstTypeInfo]);
+
   // finally storing the onchanging item in ItemList
   const AddItemList = () => {
-    setItemList((preVal) => {
-      return [...preVal, itemInfo];
-    });
+    if (
+      itemInfo.item_name === "" ||
+      itemInfo.item_make === "" ||
+      itemInfo.item_modalNo === "" ||
+      itemInfo.item_partNo === "" ||
+      itemInfo.item_price === "" ||
+      itemInfo.item_quantity === "" ||
+      itemInfo.item_total_price === ""
+    ) {
+      Swal.fire("Enter all Details before procedding...!");
+    } else {
+      setItemList((preVal) => {
+        return [...preVal, itemInfo];
+      });
 
-    setItemInfo({
-      item_name: "",
-      item_make: "",
-      item_modalNo: "",
-      item_partNo: "",
-      item_price: "",
-      item_quantity: "",
-      item_total_price: "",
-    });
+      setItemInfo({
+        item_name: "",
+        item_make: "",
+        item_modalNo: "",
+        item_partNo: "",
+        item_price: "",
+        item_quantity: "",
+        item_IGST: 0,
+        item_CGST: 0,
+        item_SGST: 0,
+        item_total_price: "",
+      });
+    }
   };
   // -----------------------------------------------------------------------------------------------
 
@@ -185,28 +215,33 @@ const AddQuotationForm = ({ enquiryInfo }) => {
               </select>
             </div>
           </div>
+
+          <div className="col-12 col-sm-4">
+            <div className="form-group local-forms">
+              <label>
+                Gst Type <span className="login-danger">*</span>
+              </label>
+              <select
+                className="form-control select"
+                onChange={(e) => {
+                  return setGstTypeInfo(e.target.value);
+                }}
+                name="gst_type"
+              >
+                <option value="" className="active">
+                  Select Gst Type
+                </option>
+                <option value="IGST">IGST</option>
+                <option value="CGST/SGST">CGST / SGST</option>
+              </select>
+            </div>
+          </div>
         </div>
 
         <div className="row">
           <div className="col-12 col-sm-12">
             <div className="col-12 d-flex">
               <h5 className="form-title student-info">Quotation Items</h5>
-            </div>
-          </div>
-
-          <div className="col-12 col-sm-3">
-            <div className="form-group local-forms">
-              <label>
-                Name
-                <span className="login-danger">*</span>
-              </label>
-              <input
-                className="form-control"
-                type="text"
-                onChange={insertItems}
-                value={itemInfo.item_name}
-                name="item_name"
-              />
             </div>
           </div>
 
@@ -245,6 +280,22 @@ const AddQuotationForm = ({ enquiryInfo }) => {
           <div className="col-12 col-sm-3">
             <div className="form-group local-forms">
               <label>
+                Part Name
+                <span className="login-danger">*</span>
+              </label>
+              <input
+                className="form-control"
+                type="text"
+                onChange={insertItems}
+                value={itemInfo.item_name}
+                name="item_name"
+              />
+            </div>
+          </div>
+
+          <div className="col-12 col-sm-3">
+            <div className="form-group local-forms">
+              <label>
                 Part No
                 <span className="login-danger">*</span>
               </label>
@@ -261,7 +312,7 @@ const AddQuotationForm = ({ enquiryInfo }) => {
           <div className="col-12 col-sm-2">
             <div className="form-group local-forms">
               <label>
-                Price (₹)
+                Unit Price (₹)
                 <span className="login-danger">*</span>
               </label>
               <input
@@ -289,6 +340,57 @@ const AddQuotationForm = ({ enquiryInfo }) => {
               />
             </div>
           </div>
+
+          {GstTypeInfo === "" ? null : GstTypeInfo === "IGST" ? (
+            <div className="col-12 col-sm-2">
+              <div className="form-group local-forms">
+                <label>
+                  IGST (%)
+                  <span className="login-danger">*</span>
+                </label>
+                <input
+                  className="form-control"
+                  type="number"
+                  onChange={insertItems}
+                  value={itemInfo.item_IGST}
+                  name="item_IGST"
+                />
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="col-12 col-sm-2">
+                <div className="form-group local-forms">
+                  <label>
+                    CGST (%)
+                    <span className="login-danger">*</span>
+                  </label>
+                  <input
+                    className="form-control"
+                    type="number"
+                    onChange={insertItems}
+                    value={itemInfo.item_CGST}
+                    name="item_CGST"
+                  />
+                </div>
+              </div>
+              <div className="col-12 col-sm-2">
+                <div className="form-group local-forms">
+                  <label>
+                    SGST (%)
+                    <span className="login-danger">*</span>
+                  </label>
+                  <input
+                    className="form-control"
+                    type="number"
+                    onChange={insertItems}
+                    value={itemInfo.item_SGST}
+                    name="item_SGST"
+                  />
+                </div>
+              </div>
+            </>
+          )}
 
           <div className="col-12 col-sm-2">
             <div className="form-group local-forms">

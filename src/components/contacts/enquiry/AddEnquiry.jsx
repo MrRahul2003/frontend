@@ -19,6 +19,8 @@ import withReactContent from "sweetalert2-react-content";
 const AddEnquiry = () => {
   const MySwal = withReactContent(Swal);
 
+  const [loading, setLoading] = useState(false);
+
   // ---------------------getting enquiry info from navlink--------------------------------
   let location = useLocation();
   console.log("Enquiry information is: ", location.state.contactInfo);
@@ -119,7 +121,9 @@ const AddEnquiry = () => {
         itemList: ItemList,
       };
 
+      setLoading(true);
       const response = await addEnquiry(data);
+      setLoading(false);
       console.log(response);
 
       if (response.status === 200) {
@@ -306,8 +310,9 @@ const AddEnquiry = () => {
                           type="submit"
                           className="btn btn-primary"
                           onClick={submitForm}
+                          disabled={loading}
                         >
-                          Submit
+                          {loading ? <>Adding..</> : <>Add</>}
                         </button>
                       </div>
                     </div>

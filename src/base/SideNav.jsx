@@ -95,16 +95,14 @@ const SideNav = () => {
                   label="Authentication"
                   icon={<i className="fas fa-unlock-alt"></i>}
                 >
-                  {user === "admin" ? (
-                    <NavLink
-                      to="/authentication/signin"
-                      style={{ textDecoration: "none", color: "black" }}
-                    >
-                      <MenuItem>
-                        <i className="fas fa-angle-double-right mx-3"></i>signin
-                      </MenuItem>
-                    </NavLink>
-                  ) : null}
+                  <NavLink
+                    to="/authentication/signin"
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    <MenuItem>
+                      <i className="fas fa-angle-double-right mx-3"></i>signin
+                    </MenuItem>
+                  </NavLink>
 
                   <NavLink
                     to="/authentication/login"

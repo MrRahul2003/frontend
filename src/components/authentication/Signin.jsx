@@ -15,7 +15,7 @@ const Signin = () => {
 
   const navigate = useNavigate();
 
-  const [userType, setUserType] = useState("");
+  const [userType, setUserType] = useState("user");
   const [secretKey, setSecretKey] = useState("");
 
   const [Signin, setSignin] = useState({
@@ -57,7 +57,7 @@ const Signin = () => {
         login_addingdate: login_addingdate,
       };
 
-      if (username === "" || email === "" || password === "") {
+      if (username === "" || email === "" || password === "" || userType === "") {
         Swal.fire("Enter all Details before procedding!");
       } else {
         setLoading(true);

@@ -30,12 +30,15 @@ const AllItemList = (props) => {
                   <thead className="student-thread">
                     <tr>
                       <th>ID</th>
-                      <th>Name</th>
                       <th>Make</th>
                       <th>Modal No</th>
+                      <th>Part Name</th>
                       <th>Part No</th>
-                      <th>Price</th>
+                      <th>Unit Price</th>
                       <th>Quantity</th>
+                      <th>IGST</th>
+                      <th>CGST</th>
+                      <th>SGST</th>
                       <th>Total</th>
                       <th>Action</th>
                     </tr>
@@ -46,14 +49,17 @@ const AllItemList = (props) => {
                         return (
                           <tr key={i}>
                             <td>{i + 1}</td>
+                            <td>{item.item_make}</td>
+                            <td>{item.item_modalNo}</td>
                             <td>
                               <h2>{item.item_name}</h2>
                             </td>
-                            <td>{item.item_make}</td>
-                            <td>{item.item_modalNo}</td>
                             <td>{item.item_partNo}</td>
                             <td>{item.item_price}</td>
                             <td>{item.item_quantity}</td>
+                            <td>{item.item_IGST}</td>
+                            <td>{item.item_CGST}</td>
+                            <td>{item.item_SGST}</td>
                             <td>{item.item_total_price}</td>
                             <td>
                               <a

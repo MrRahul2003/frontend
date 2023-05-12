@@ -152,12 +152,15 @@ const ShowQuotation = () => {
                                 <thead className="student-thread">
                                   <tr>
                                     <th>ID</th>
-                                    <th>Name</th>
                                     <th>Make</th>
                                     <th>Modal No</th>
+                                    <th>Part Name</th>
                                     <th>Part No</th>
-                                    <th>Price</th>
+                                    <th>Unit Price</th>
                                     <th>Quantity</th>
+                                    <th>IGST</th>
+                                    <th>CGST</th>
+                                    <th>SGST</th>
                                     <th>Total Price</th>
                                   </tr>
                                 </thead>
@@ -166,12 +169,15 @@ const ShowQuotation = () => {
                                     return (
                                       <tr key={i}>
                                         <td>{i + 1}</td>
-                                        <td>{subitem.item_name}</td>
                                         <td>{subitem.item_make}</td>
                                         <td>{subitem.item_modalNo}</td>
+                                        <td>{subitem.item_name}</td>
                                         <td>{subitem.item_partNo}</td>
                                         <td>{subitem.item_price}</td>
                                         <td>{subitem.item_quantity}</td>
+                                        <td>{subitem.item_IGST}</td>
+                                        <td>{subitem.item_CGST}</td>
+                                        <td>{subitem.item_SGST}</td>
                                         <td>{subitem.item_total_price}</td>
                                       </tr>
                                     );
