@@ -41,6 +41,8 @@ const EditEnquiry = () => {
       enquiry_name: EnquiryInfo.enquiry_name,
       enquiry_contact_name: EnquiryInfo.enquiry_contact_name,
       enquiry_stage: EnquiryInfo.enquiry_stage,
+
+      enquiry_addingdate: EnquiryInfo.enquiry_addingdate,
       enquiry_closingDate: EnquiryInfo.enquiry_closingDate,
       enquiry_description: EnquiryInfo.enquiry_description,
     });
