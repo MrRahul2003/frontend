@@ -79,6 +79,12 @@ const About = ({ enquiryInfo }) => {
                 </h5>
                 <div className="row">
                   <p className="col-sm-3 text-muted text-sm-end mb-0 mb-sm-3">
+                    Enquiry Id
+                  </p>
+                  <p className="col-sm-9">{enquiryInfo._id}</p>
+                </div>
+                <div className="row">
+                  <p className="col-sm-3 text-muted text-sm-end mb-0 mb-sm-3">
                     Enquiry Closing Date
                   </p>
                   <p className="col-sm-9">{enquiryInfo.enquiry_closingDate}</p>

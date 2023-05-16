@@ -118,6 +118,7 @@ const EditEnquiry = () => {
         enquiry_name: enquiryInfo.enquiry_name,
         enquiry_stage: enquiryInfo.enquiry_stage,
         enquiry_closingDate: enquiryInfo.enquiry_closingDate,
+        enquiry_addingdate: enquiryInfo.enquiry_addingdate,
         enquiry_description: enquiryInfo.enquiry_description,
 
         itemList: ItemList,

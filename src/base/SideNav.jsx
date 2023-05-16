@@ -195,6 +195,46 @@ const SideNav = () => {
                   </SubMenu>
                 ) : null}
                 {/* ------------------------------------------------------------------------- */}
+                {/* ----------------------------- View ---------------------------------- */}
+                {user === "admin" ? (
+                  <SubMenu
+                    label="View"
+                    icon={<i className="fas fa-search"></i>}
+                  >
+
+                    <NavLink
+                      to="/view/quotations"
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <MenuItem>
+                        <i className="fas fa-angle-double-right mx-3"></i>Show
+                        Quotations
+                      </MenuItem>
+                    </NavLink>
+
+                    <NavLink
+                      to="/view/purchaseorder"
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <MenuItem>
+                        <i className="fas fa-angle-double-right mx-3"></i>Show
+                        Purchaseorder
+                      </MenuItem>
+                    </NavLink>
+
+                    <NavLink
+                      to="/view/productorder"
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <MenuItem>
+                        <i className="fas fa-angle-double-right mx-3"></i>Show
+                        Quotations Customer
+                      </MenuItem>
+                    </NavLink>
+
+                  </SubMenu>
+                ) : null}
+                {/* ------------------------------------------------------------------------- */}
               </Menu>
             </Sidebar>
           </div>

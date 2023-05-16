@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid';
 
 // api
 import { genProduct, sendProduct } from "../../Api/Product";
@@ -8,6 +9,7 @@ import { getContact } from "../../Api/Contact";
 // sweet alert
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { addProductOrder } from "../../Api/ProductOrder";
 
 const AllItemList = (props) => {
   const MySwal = withReactContent(Swal);
@@ -47,9 +49,16 @@ const AllItemList = (props) => {
   // on submitting the form sending the data to database using axios api
   const submitForm = async (e) => {
     e.preventDefault();
+    const productorder_addingdate = new Date().toLocaleString();
+
     const data = {
       employee_id: loginId,
       employee_email: email,
+
+      uuid_id: uuidv4(),
+      productorder_contact_id: props.enquiryInfo.enquiry_contact_id,
+      enquiry_id: props.enquiryInfo._id,
+      productorder_addingdate: productorder_addingdate,
 
       contactDetails: contactDetails,
       itemList: AllItemsData,
@@ -73,10 +82,11 @@ const AllItemList = (props) => {
         if (result.isConfirmed) {
           setLoading(true);
           const res = await sendProduct(data);
+          const resProduct = await addProductOrder(data); 
           setLoading(false);
           console.log(res.data);
 
-          if (res.status === 200) {
+          if (res.status === 200 && resProduct.status === 200) {
             Swal.fire(
               "Sent!",
               "Your Product Purchase Order has been sent.",

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid';
 
 // components
 import AllItemList from "./AllItemList";
@@ -12,6 +13,7 @@ import { getVendor } from "../../Api/Vendor";
 // sweet alert
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { addPurchaseOrder } from "../../Api/PurchaseOrder";
 
 const PurchaseOrderForm = ({ quotationInfo, enquiryInfo }) => {
   const MySwal = withReactContent(Swal);
@@ -49,9 +51,19 @@ const PurchaseOrderForm = ({ quotationInfo, enquiryInfo }) => {
   // on submitting the form sending the data to database using axios api
   const submitForm = async (e) => {
     e.preventDefault();
+    const purchaseorder_addingdate = new Date().toLocaleString();
+
     const data = {
       employee_id: loginId,
       employee_email: email,
+      
+      uuid_id: uuidv4(),
+      purchaseorder_contact_id: enquiryInfo.enquiry_contact_id,
+      enquiry_id: enquiryInfo._id,
+      quotation_id: quotationInfo._id,
+      vendor_id: vendorData._id,
+      vendor_email: vendorData.vendor_email,
+      purchaseorder_addingdate: purchaseorder_addingdate,
 
       vendorData: vendorData,
       itemList: ItemList,
@@ -74,11 +86,12 @@ const PurchaseOrderForm = ({ quotationInfo, enquiryInfo }) => {
       }).then(async (result) => {
         if (result.isConfirmed) {
           setLoading(true);
-          const res = await sendPurchaseOrder(data);
+          const res = await sendPurchaseOrder(data); 
+          const resPurchase = await addPurchaseOrder(data); 
           setLoading(false);
           console.log(res.data);
 
-          if (res.status === 200) {
+          if (res.status === 200 && resPurchase.status === 200) {
             Swal.fire("Sent!", "Your Purchase Order has been sent.", "success");
             navigate("/enquirysales/showenquiry");
           } else {

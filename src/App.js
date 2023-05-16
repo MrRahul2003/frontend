@@ -60,11 +60,19 @@ import AddQuotation from "./components/enquiry/quotation/AddQuotation";
 import ShowQuotation from "./components/enquiry/quotation/ShowQuotation";
 import EditQuotation from "./components/enquiry/quotation/EditQuotation";
 
+// view
+import ShowQuotations from "./components/view/ShowQuotations";
+import ShowProductOrder from "./components/view/ShowProductOrder";
+import ShowPurchaseOrder from "./components/view/ShowPurchaseOrder";
+
 // purchaseorder
 import PurchaseOrder from "./components/enquiry/purchaseorder/PurchaseOrder";
 
 // productorder
 import ProductOrder from "./components/enquiry/productorder/ProductOrder";
+
+
+import pdf from "./components/tp/pdf";
 
 function App() {
   return (
@@ -148,9 +156,18 @@ function App() {
           <Route path="login" element={<Protected Component={Login} />} />
         </Route>
 
+        <Route path="/view">
+          <Route path="quotations" element={<Protected Component={ShowQuotations} />} />
+          <Route path="purchaseorder" element={<Protected Component={ShowPurchaseOrder} />} />
+          <Route path="productorder" element={<Protected Component={ShowProductOrder} />} />
+        </Route>
+
         <Route path="/pipeline" element={<Protected Component={MainPipeline} />} />
 
         <Route path="*" element={<Protected Component={MainPipeline} />} />
+
+        <Route path="/pdf" element={<Protected Component={pdf} />} />
+
       </Route>
     </Routes>
   );

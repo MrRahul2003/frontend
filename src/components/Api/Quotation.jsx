@@ -18,6 +18,18 @@ const addQuotation = async (data) => {
   }
 };
 
+const getAllQuotation = async (data) => {
+  try {
+    console.log("get all quotation data sending", data);
+    const response = await axios.post(`${url}/quotation/getallquotation`, data);
+    console.log("get all quotation response receiving", response);
+    return response;
+  } catch (error) {
+    console.log("Error while get all quotation API", error.message);
+    return error;
+  }
+};
+
 const getQuotation = async (data) => {
   try {
     console.log("get new quotation data sending", data);
@@ -47,7 +59,10 @@ const editQuotation = async (data) => {
 const genPurchaseOrder = async (data) => {
   try {
     console.log("gen new purchaseorder data sending", data);
-    const response = await axios.post(`${url}/purchaseorder/genpurchaseorder`, data);
+    const response = await axios.post(
+      `${url}/purchaseorder/genpurchaseorder`,
+      data
+    );
     console.log("gen new purchaseorder response receiving", response);
     return response;
   } catch (error) {
@@ -60,7 +75,10 @@ const genPurchaseOrder = async (data) => {
 const sendPurchaseOrder = async (data) => {
   try {
     console.log("send new purchaseorder data sending", data);
-    const response = await axios.post(`${url}/purchaseorder/sendpurchaseorder`, data);
+    const response = await axios.post(
+      `${url}/purchaseorder/sendpurchaseorder`,
+      data
+    );
     console.log("send new purchaseorder response receiving", response);
     return response;
   } catch (error) {
@@ -82,4 +100,12 @@ const deleteQuotation = async (data) => {
   }
 };
 
-export { addQuotation, getQuotation, editQuotation, genPurchaseOrder, sendPurchaseOrder, deleteQuotation};
+export {
+  addQuotation,
+  getQuotation,
+  getAllQuotation,
+  editQuotation,
+  genPurchaseOrder,
+  sendPurchaseOrder,
+  deleteQuotation,
+};

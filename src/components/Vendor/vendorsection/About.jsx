@@ -93,9 +93,9 @@ const About = ({vendorInfo}) => {
                 </h5>
                 <div className="row">
                   <p className="col-sm-3 text-muted text-sm-end mb-0 mb-sm-3">
-                    Contacts
+                    Vendor Id
                   </p>
-                  <p className="col-sm-9">3</p>
+                  <p className="col-sm-9">{vendorInfo._id}</p>
                 </div>
                 <div className="row">
                   <p className="col-sm-3 text-muted text-sm-end mb-0 mb-sm-3">
