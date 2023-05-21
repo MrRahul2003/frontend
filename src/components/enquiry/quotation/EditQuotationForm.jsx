@@ -139,7 +139,8 @@ const EditQuotationForm = ({ quotationInfo, enquiryInfo }) => {
         document.getElementById("addquotaionform").reset();
         setUpdateStatus(!updateStatus);
         setItemList([]);
-        navigate("/enquirysales/showenquiry");
+        // navigate("/enquirysales/showenquiry");
+        navigate(-1);
       } else {
         Swal.fire({
           icon: "error",

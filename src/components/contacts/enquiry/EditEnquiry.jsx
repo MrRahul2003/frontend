@@ -134,7 +134,8 @@ const EditEnquiry = () => {
       if (response.status === 200) {
         Swal.fire("Good job!", "Changes made successfully!", "success");
         document.getElementById("editenquiryform").reset();
-        navigate("/contacts/showcontacts");
+        // navigate("/contacts/showcontacts");
+        navigate(-1);
       } else {
         Swal.fire({
           icon: "error",

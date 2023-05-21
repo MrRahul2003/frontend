@@ -93,7 +93,8 @@ const PurchaseOrderForm = ({ quotationInfo, enquiryInfo }) => {
 
           if (res.status === 200 && resPurchase.status === 200) {
             Swal.fire("Sent!", "Your Purchase Order has been sent.", "success");
-            navigate("/enquirysales/showenquiry");
+            // navigate("/enquirysales/showenquiry");
+            navigate(-1);
           } else {
             Swal.fire({
               icon: "error",
@@ -131,12 +132,18 @@ const PurchaseOrderForm = ({ quotationInfo, enquiryInfo }) => {
           <ItemTable ItemList={ItemList} />
           <div class="modal-footer">
             <div class="bank-details-btn">
-              <NavLink
+              {/* <NavLink
                 to="/enquirysales/showenquiry"
                 className="btn bank-cancel-btn me-2"
+                >
+                Cancel
+              </NavLink> */}
+              <button
+                className="btn bank-cancel-btn me-2"
+                onClick={() => navigate(-1)}
               >
                 Cancel
-              </NavLink>
+              </button>
               <button
                 className="btn bank-cancel-btn me-2"
                 type="button"
