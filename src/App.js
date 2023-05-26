@@ -67,12 +67,14 @@ import ShowPurchaseOrder from "./components/view/ShowPurchaseOrder";
 
 // purchaseorder
 import PurchaseOrder from "./components/enquiry/purchaseorder/PurchaseOrder";
+import VendorBill from "./components/enquiry/purchaseorder/VendorBill";
 
 // productorder
 import ProductOrder from "./components/enquiry/productorder/ProductOrder";
 
-
 import pdf from "./components/tp/pdf";
+import ProductOrderCustomer from "./components/enquiry/productorder/ProductOrderCustomer";
+import EditQuotationCustomer from "./components/enquiry/productorder/EditQuotationCustomer";
 
 function App() {
   return (
@@ -147,8 +149,11 @@ function App() {
           <Route path="showquotation" element={<Protected Component={ShowQuotation} />} />
 
           <Route path="purchaseorder" element={<Protected Component={PurchaseOrder} />} />
+          <Route path="addvendorbill" element={<Protected Component={VendorBill} />} />
 
           <Route path="productorder" element={<Protected Component={ProductOrder} />} />
+          <Route path="productordercustomer" element={<Protected Component={ProductOrderCustomer} />} />
+          <Route path="editquotationcustomer" element={<Protected Component={EditQuotationCustomer} />} />
         </Route>
 
         <Route path="/authentication">

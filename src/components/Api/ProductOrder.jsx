@@ -30,4 +30,16 @@ const getAllProductOrder = async (data) => {
   }
 };
 
-export { addProductOrder, getAllProductOrder};
+const getProductOrder= async (data) => {
+  try {
+    console.log("get all productorder data sending", data);
+    const response = await axios.post(`${url}/productorder/getproductorder`, data);
+    console.log("get all productorder response receiving", response);
+    return response;
+  } catch (error) {
+    console.log("Error while get all productorder API", error.message);
+    return error;
+  }
+};
+
+export { addProductOrder, getAllProductOrder, getProductOrder};

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 } from 'uuid';
 
 // components
 import AllItemList from "./AllItemList";
@@ -9,11 +9,11 @@ import ItemTable from "./ItemTable";
 // Api
 import { genPurchaseOrder, sendPurchaseOrder } from "../../Api/Quotation";
 import { getVendor } from "../../Api/Vendor";
+import { addPurchaseOrder } from "../../Api/PurchaseOrder";
 
 // sweet alert
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { addPurchaseOrder } from "../../Api/PurchaseOrder";
 
 const PurchaseOrderForm = ({ quotationInfo, enquiryInfo }) => {
   const MySwal = withReactContent(Swal);
@@ -53,11 +53,17 @@ const PurchaseOrderForm = ({ quotationInfo, enquiryInfo }) => {
     e.preventDefault();
     const purchaseorder_addingdate = new Date().toLocaleString();
 
+    const getRandomName = () => {
+      let rand = Date.now() + Math.floor(Math.random());
+      console.log(Date.now(), Math.random());
+      return rand;
+    }
+
     const data = {
       employee_id: loginId,
       employee_email: email,
       
-      uuid_id: uuidv4(),
+      uuid_id: getRandomName(),
       purchaseorder_contact_id: enquiryInfo.enquiry_contact_id,
       enquiry_id: enquiryInfo._id,
       quotation_id: quotationInfo._id,

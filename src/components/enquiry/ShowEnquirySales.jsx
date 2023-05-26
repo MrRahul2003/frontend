@@ -68,9 +68,9 @@ const ShowEnquirySales = () => {
                               <th>Contact Name</th>
                               <th>Closing Date</th>
                               <th>Adding Date</th>
-                              <th>Action</th>
-                              <th>Quotation</th>
-                              <th>Order</th>
+                              <th>Enquiry</th>
+                              <th>Vendor Quotation</th>
+                              <th>Customer Quotataion</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -142,6 +142,13 @@ const ShowEnquirySales = () => {
                                       state={{ enquiryInfo: item }}
                                     >
                                       <i className="feather-share" />
+                                    </NavLink>
+                                    <NavLink
+                                      to="/enquirysales/productordercustomer"
+                                      className="btn btn-sm bg-success-light me-2"
+                                      state={{ enquiryInfo: item }}
+                                    >
+                                      <i className="feather-eye" />
                                     </NavLink>
                                   </td>
                                 </tr>

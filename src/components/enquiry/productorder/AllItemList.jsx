@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 } from "uuid";
 
 // api
 import { genProduct, sendProduct } from "../../Api/Product";
@@ -50,12 +50,18 @@ const AllItemList = (props) => {
   const submitForm = async (e) => {
     e.preventDefault();
     const productorder_addingdate = new Date().toLocaleString();
-
+    
+    const getRandomName = () => {
+      let rand = Date.now() + Math.floor(Math.random());
+      console.log(Date.now(), Math.random());
+      return rand;
+    }
+    
     const data = {
       employee_id: loginId,
       employee_email: email,
 
-      uuid_id: uuidv4(),
+      uuid_id: getRandomName(),
       productorder_contact_id: props.enquiryInfo.enquiry_contact_id,
       enquiry_id: props.enquiryInfo._id,
       productorder_addingdate: productorder_addingdate,
@@ -82,7 +88,7 @@ const AllItemList = (props) => {
         if (result.isConfirmed) {
           setLoading(true);
           const res = await sendProduct(data);
-          const resProduct = await addProductOrder(data); 
+          const resProduct = await addProductOrder(data);
           setLoading(false);
           console.log(res.data);
 
@@ -332,7 +338,7 @@ const AllItemList = (props) => {
                     </tbody>
                   </table>
                   <button
-                    className="btn btn-primary mt-4"
+                    className="btn btn-primary my-4 mx-3"
                     type="button"
                     onClick={submitForm}
                     disabled={loading}

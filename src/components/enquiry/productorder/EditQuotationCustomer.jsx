@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import BreadCrumb from "../components/BreadCrumb";
 import EditQuotationForm from "./EditQuotationForm";
 
-const EditQuotation = () => {
+const EditQuotationCustomer = () => {
   // ---------------------getting enquiry section info from navlink--------------------------------
   let location = useLocation();
   console.log("Enquiry information is: ", location.state.quotationInfo);
@@ -17,7 +17,7 @@ const EditQuotation = () => {
     <>
       <div className="page-wrapper">
         <div className="content container-fluid">
-          <BreadCrumb title="Edit Quotaion Vendor" />
+          <BreadCrumb title="Edit Quotaion Customer" />
           <div className="row">
             <div className="col-sm-12">
               <div className="card comman-shadow">
@@ -32,5 +32,4 @@ const EditQuotation = () => {
     </>
   ); 
 };
-
-export default EditQuotation;
+export default EditQuotationCustomer
