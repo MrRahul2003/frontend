@@ -28,6 +28,27 @@ const AllItemList = (props) => {
   const [contactDetails, setcontactDetails] = useState({});
   const [GstTypeInfo, setGstTypeInfo] = useState("");
 
+  const [productDetails, setProductDetails] = useState({
+    packing_charge: "@ 3%",
+    transport_charge: "ON PARTIES ACCOUNT",
+    payment_terms: "AGAINST PROFORMA INVOICE",
+    delivery: "READY STOCK",
+    offer_validity: "7 DAYS FROM ISSUE",
+  });
+
+  // updating the add contact data on changing the values
+  const insertFields = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    setProductDetails((preVal) => {
+      return {
+        ...preVal,
+        [name]: value,
+      };
+    });
+  };
+
   useEffect(() => {
     setAllItemsData(props.ItemList);
   }, [props.ItemList]);
@@ -48,72 +69,88 @@ const AllItemList = (props) => {
 
   // on submitting the form sending the data to database using axios api
   const submitForm = async (e) => {
-    e.preventDefault();
-    const productorder_addingdate = new Date().toLocaleString();
-    
-    const getRandomName = () => {
-      let rand = Date.now() + Math.floor(Math.random());
-      console.log(Date.now(), Math.random());
-      return rand;
-    }
-    
-    const data = {
-      employee_id: loginId,
-      employee_email: email,
-
-      uuid_id: getRandomName(),
-      productorder_contact_id: props.enquiryInfo.enquiry_contact_id,
-      enquiry_id: props.enquiryInfo._id,
-      productorder_addingdate: productorder_addingdate,
-
-      contactDetails: contactDetails,
-      itemList: AllItemsData,
-    };
-
-    setLoading(true);
-    const response = await genProduct(data);
-    setLoading(false);
-    console.log(response);
-
-    if (response.status === 200) {
-      Swal.fire({
-        title: "Product Purchase Order has been generated?",
-        text: "Do you wish to send it on Mail to customer!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, Send it!",
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          setLoading(true);
-          const res = await sendProduct(data);
-          const resProduct = await addProductOrder(data);
-          setLoading(false);
-          console.log(res.data);
-
-          if (res.status === 200 && resProduct.status === 200) {
-            Swal.fire(
-              "Sent!",
-              "Your Product Purchase Order has been sent.",
-              "success"
-            );
-            navigate("/enquirysales/showenquiry");
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Something went wrong!",
-            });
-          }
-        }
-      });
+    if (
+      productDetails.packing_charge === "" ||
+      productDetails.transport_charge === "" ||
+      productDetails.payment_terms === "" ||
+      productDetails.delivery === "" ||
+      productDetails.offer_validity === ""
+    ) {
+      Swal.fire("Enter all Details before procedding!");
     } else {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Something went wrong!",
-      });
+      e.preventDefault();
+      const productorder_addingdate = new Date().toLocaleString();
+
+      const getRandomName = () => {
+        let rand = Date.now() + Math.floor(Math.random());
+        console.log(Date.now(), Math.random());
+        return rand;
+      };
+
+      const data = {
+        employee_id: loginId,
+        employee_email: email,
+
+        packing_charge: productDetails.packing_charge,
+        transport_charge: productDetails.transport_charge,
+        payment_terms: productDetails.payment_terms,
+        delivery: productDetails.delivery,
+        offer_validity: productDetails.offer_validity,
+
+        uuid_id: getRandomName(),
+        productorder_contact_id: props.enquiryInfo.enquiry_contact_id,
+        enquiry_id: props.enquiryInfo._id,
+        productorder_addingdate: productorder_addingdate,
+
+        contactDetails: contactDetails,
+        itemList: AllItemsData,
+      };
+
+      setLoading(true);
+      const response = await genProduct(data);
+      setLoading(false);
+      console.log(response);
+
+      if (response.status === 200) {
+        Swal.fire({
+          title: "Product Purchase Order has been generated?",
+          text: "Do you wish to send it on Mail to customer!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, Send it!",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            setLoading(true);
+            const res = await sendProduct(data);
+            const resProduct = await addProductOrder(data);
+            setLoading(false);
+            console.log(res.data);
+
+            if (res.status === 200 && resProduct.status === 200) {
+              Swal.fire(
+                "Sent!",
+                "Your Product Purchase Order has been sent.",
+                "success"
+              );
+              navigate("/enquirysales/showenquiry");
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong!",
+              });
+            }
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
+      }
     }
   };
 
@@ -337,6 +374,89 @@ const AllItemList = (props) => {
                         })}
                     </tbody>
                   </table>
+
+                  <div className="row my-4">
+                    <div className="col-12 col-sm-4">
+                      <div className="form-group local-forms">
+                        <label>
+                          PACKING CHARGE
+                          <span className="login-danger">*</span>
+                        </label>
+                        <input
+                          className="form-control"
+                          type="text"
+                          required
+                          onChange={insertFields}
+                          name="packing_charge"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-12 col-sm-4">
+                      <div className="form-group local-forms">
+                        <label>
+                          TRANSPORT CHARGES
+                          <span className="login-danger">*</span>
+                        </label>
+                        <input
+                          className="form-control"
+                          type="text"
+                          required
+                          onChange={insertFields}
+                          name="transport_charge"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-12 col-sm-4">
+                      <div className="form-group local-forms">
+                        <label>
+                          PAYMENTS TERMS
+                          <span className="login-danger">*</span>
+                        </label>
+                        <input
+                          className="form-control"
+                          type="text"
+                          required
+                          onChange={insertFields}
+                          name="payment_terms"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-12 col-sm-4">
+                      <div className="form-group local-forms">
+                        <label>
+                          DELIVERY
+                          <span className="login-danger">*</span>
+                        </label>
+                        <input
+                          className="form-control"
+                          type="text"
+                          required
+                          onChange={insertFields}
+                          name="delivery"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-12 col-sm-4">
+                      <div className="form-group local-forms">
+                        <label>
+                          OFFER VALIDITY
+                          <span className="login-danger">*</span>
+                        </label>
+                        <input
+                          className="form-control"
+                          type="text"
+                          required
+                          onChange={insertFields}
+                          name="offer_validity"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
                   <button
                     className="btn btn-primary my-4 mx-3"
                     type="button"

@@ -52,7 +52,7 @@ const ShowQuotations = () => {
               <div className="card card-table">
                 <div className="card-body">
                   {AllQuotationFilter &&
-                    AllQuotationFilter.map((item, i) => {
+                    AllQuotationFilter.reverse().map((item, i) => {
                       return (
                         <div className="card">
                           <div className="card-body">

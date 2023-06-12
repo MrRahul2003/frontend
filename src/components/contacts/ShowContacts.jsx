@@ -167,7 +167,7 @@ const ShowContacts = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {allContactsFiltered.map((item, i) => {
+                        {allContactsFiltered.reverse().map((item, i) => {
                           return (
                             <tr key={i}>
                               <td>{i + 1}</td>

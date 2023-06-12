@@ -49,7 +49,7 @@ const ShowPurchaseOrder = () => {
               <div className="card card-table">
                 <div className="card-body">
                   {AllPurchaseOrderFiltered &&
-                    AllPurchaseOrderFiltered.map((item, i) => {
+                    AllPurchaseOrderFiltered.reverse().map((item, i) => {
                       return (
                         <div className="card">
                           <div className="card-body">

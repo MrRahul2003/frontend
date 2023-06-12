@@ -159,7 +159,7 @@ const ShowCompanies = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {allCompaniesFiltered.map((item, i) => {
+                        {allCompaniesFiltered.reverse().map((item, i) => {
                           return (
                             <tr key={i}>
                               <td>{i + 1}</td>

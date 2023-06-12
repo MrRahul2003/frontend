@@ -48,7 +48,7 @@ const ShowProductOrder = () => {
               <div className="card card-table">
                 <div className="card-body">
                   {AllProductOrderFiltered &&
-                    AllProductOrderFiltered.map((item, i) => {
+                    AllProductOrderFiltered.reverse().map((item, i) => {
                       return (
                         <div className="card">
                           <div className="card-body">

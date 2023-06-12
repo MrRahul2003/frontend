@@ -32,6 +32,31 @@ const ShowEnquirySales = () => {
   }, []);
   // --------------------------------------------------------------------------------------------------
 
+  // -----------------------------Pagination-----------------------------------------------------------
+  const [currentPage, setcurrentPage] = useState(1);
+  const recordsPerPage = 2;
+  const lastIndex = currentPage * recordsPerPage;
+  const firstIndex = lastIndex - recordsPerPage;
+  const records = AllEnquiryFiltered.slice(firstIndex, lastIndex);
+  const npage = Math.ceil(AllEnquiryFiltered.length / recordsPerPage);
+  const numbers = [...Array(npage + 1).keys()].slice(1);
+
+  const prePage = () => {
+    if (currentPage !== 1) {
+      setcurrentPage(currentPage - 1);
+    }
+  };
+  const changeCPage = (id) => {
+    console.log(id);
+    setcurrentPage(id);
+  };
+  const nextPage = () => {
+    if (currentPage !== npage) {
+      setcurrentPage(currentPage + 1);
+    }
+  };
+  // --------------------------------------------------------------------------------------------------
+
   return (
     <>
       <div className="page-wrapper">
@@ -42,7 +67,7 @@ const ShowEnquirySales = () => {
             AllEnquiry={AllEnquiry}
             setAllEnquiryFiltered={setAllEnquiryFiltered}
           />
-          {AllEnquiryFiltered.map((item, i) => {
+          {records.reverse().map((item, i) => {
             return (
               <div className="row">
                 <div className="col-sm-12">
@@ -163,6 +188,50 @@ const ShowEnquirySales = () => {
               </div>
             );
           })}
+          <div>
+            <ul className="pagination mb-4">
+              <li className="page-item">
+                <a
+                  className="page-link"
+                  href="#"
+                  aria-label="Previous"
+                  onClick={prePage}
+                >
+                  <span aria-hidden="true">«</span>
+                  <span className="sr-only">Previous</span>
+                </a>
+              </li>
+
+              {numbers.map((n, i) => {
+                return (
+                  <li
+                    className={`page-item ${currentPage === n ? "active" : ""}`}
+                    key={i}
+                  >
+                    <a
+                      className="page-link"
+                      href="#"
+                      onClick={() => changeCPage(n)}
+                    >
+                      {n}
+                    </a>
+                  </li>
+                );
+              })}
+
+              <li className="page-item">
+                <a
+                  className="page-link"
+                  href="#"
+                  aria-label="Next"
+                  onClick={nextPage}
+                >
+                  <span aria-hidden="true">»</span>
+                  <span className="sr-only">Next</span>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </>

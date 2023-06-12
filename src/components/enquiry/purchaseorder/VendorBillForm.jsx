@@ -27,6 +27,7 @@ const VendorBillForm = ({ quotationInfo, enquiryInfo }) => {
   const navigate = useNavigate();
 
   const [allBills, setallBills] = useState([]);
+  const [submitStatus, setSubmitStatus] = useState(false);
 
   // --------------get all bills name and storing them in single array-------------------------------
   const getAllBillsData = async () => {
@@ -43,7 +44,7 @@ const VendorBillForm = ({ quotationInfo, enquiryInfo }) => {
 
   useEffect(() => {
     getAllBillsData();
-  }, []);
+  }, [submitStatus]);
 
   // on submitting the form sending the data to database using fetch api
   const submitForm = async (e) => {
@@ -81,9 +82,9 @@ const VendorBillForm = ({ quotationInfo, enquiryInfo }) => {
 
       if (response.status === 200) {
         Swal.fire("Good job!", "Vendor bill added successfully!", "success");
-
+        setSubmitStatus(!submitStatus);
         document.getElementById("addvendorbillform").reset();
-        navigate(-1);
+        // navigate(-1);
       } else {
         Swal.fire({
           icon: "error",
@@ -105,9 +106,15 @@ const VendorBillForm = ({ quotationInfo, enquiryInfo }) => {
       uuid_id: uuid_id,
     };
 
-    const { data } = await downloadVendorBill(dataFile);
+    const { data } = await downloadVendorBill(dataFile, {
+      responseType: "blob",
+    });
     const blob = new Blob([data], { type: "application/pdf" });
-    saveAs(blob, "vendorbill.pdf");
+    const link = document.createElement('a');
+    link.download = 'some.pdf';
+    link.href = URL.createObjectURL(blob);
+    link.click();
+    // saveAs(blob, "vendorbill.pdf");
   };
 
   // -------------------------------------------------------------------------
